@@ -1,4 +1,4 @@
-package com.testingapp
+package com.pockit.technician
 
 import android.app.Application
 import com.facebook.react.PackageList
