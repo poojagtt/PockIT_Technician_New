@@ -8,9 +8,6 @@ import {navigate} from '../utils/navigationRef';
 import {useStorage} from './hooks';
 import {apiCall} from './services';
 import Toast from '../components/Toast';
-import NotificationSounds, {
-  playSampleSound,
-} from 'react-native-notification-sounds';
 
 const user = useStorage.getNumber('user');
 const userName = useStorage.getString('userName');
@@ -135,9 +132,11 @@ export const Notification = async (
       console.log('remoteMessage.data4', JSON.parse(remoteMessage.data4));
       const data = JSON.parse(remoteMessage.data4 as string);
       console.log('\n\n...data[0]', data[0]);
+      console.log("asdgjksdgjk",type == "PJ");
       if (type === 'C') {
         navigate('Job', {screen: 'ChatScreen', params: {jobItem: data}});
-      } else if (type === 'PJ') {
+      } else if (type == '"PJ"') {
+        console.log('Navigating to PendingJobList');
         navigate('Home', {screen: 'PendingJobList'});
       } else if (type === 'J') {
         data[0]?.TRACK_STATUS == null ||
