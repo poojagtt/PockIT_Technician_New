@@ -1076,7 +1076,7 @@ console.log('first-----',TRACK_STATUS)
             onPress={() => {
               handleReached();
 
-              // if (user?.TYPE == "R") {
+              // if (user?.IS_REMOTE_TECHNICIAN == true) {
               //   handleReached();
               // }
               // else {

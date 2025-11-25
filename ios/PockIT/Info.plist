@@ -6,19 +6,6 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>PockIT</string>
-	<!-- <key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>MKDirectionsRequest</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.apple.maps.directionsrequest</string>
-			</array>
-			 <key>LSHandlerRank</key>
-        <string>Alternate</string>
-		</dict>
-	</array> -->
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -37,32 +24,25 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<!-- <key>MKDirectionsApplicationSupportedModes</key>
-	<array>
-		<string>MKDirectionsModeBike</string>
-		<string>MKDirectionsModeOther</string>
-	</array> -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<!-- <key>NSAllowsArbitraryLoads</key>
-		<true/>-->
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/> 
+		<true/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-<string>This app needs access to your camera to capture job-related photos for verification and reporting.</string>
+	<string>This app needs access to your camera to capture job-related photos for verification and reporting.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-<string>PockIT Technician requires location access to assign nearby jobs, track technician routes, and improve job dispatching accuracy.</string>
+	<string>PockIT Technician requires location access to assign nearby jobs, track technician routes, and improve job dispatching accuracy.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-<string>We need continuous location access to update your job status and location during active tasks.</string>
+	<string>We need continuous location access to update your job status and location during active tasks.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-<string>This app uses your location to show job routes and service locations while using the app.</string>
+	<string>This app uses your location to show job routes and service locations while using the app.</string>
 	<key>NSMicrophoneUsageDescription</key>
-<string>This app needs microphone access to allow you to record job-related audio or support calls, if required.</string>
+	<string>This app needs microphone access to allow you to record job-related audio or support calls, if required.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-<string>We need access to your photo library to upload relevant job photos or attach proof of service from saved media.</string>
+	<string>We need access to your photo library to upload relevant job photos or attach proof of service from saved media.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -84,12 +64,28 @@
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>Fontisto.ttf</string>
+		<string>SF-Pro-Text-Black.otf</string>
+		<string>SF-Pro-Text-BlackItalic.otf</string>
+		<string>SF-Pro-Text-Bold.otf</string>
+		<string>SF-Pro-Text-BoldItalic.otf</string>
+		<string>SF-Pro-Text-Heavy.otf</string>
+		<string>SF-Pro-Text-HeavyItalic.otf</string>
+		<string>SF-Pro-Text-Light.otf</string>
+		<string>SF-Pro-Text-LightItalic.otf</string>
+		<string>SF-Pro-Text-Medium.otf</string>
+		<string>SF-Pro-Text-MediumItalic.otf</string>
+		<string>SF-Pro-Text-Regular.otf</string>
+		<string>SF-Pro-Text-RegularItalic.otf</string>
+		<string>SF-Pro-Text-Semibold.otf</string>
+		<string>SF-Pro-Text-SemiboldItalic.otf</string>
+		<string>SF-Pro-Text-Thin.otf</string>
+		<string>SF-Pro-Text-ThinItalic.otf</string>
+		<string>SF-Pro-Text-Ultralight.otf</string>
+		<string>SF-Pro-Text-UltralightItalic.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
-		
 		<string>remote-notification</string>
-		
 		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -106,14 +102,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-		<key>UIDeviceFamily</key>
+	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
 	</array>
-
 	<key>LSSupportsOpeningDocumentsInPlace</key>
-<true/>
-
+	<true/>
 </dict>
 </plist>

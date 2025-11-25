@@ -135,7 +135,7 @@ export const Notification = async (
       console.log("asdgjksdgjk",type == "PJ");
       if (type === 'C') {
         navigate('Job', {screen: 'ChatScreen', params: {jobItem: data}});
-      } else if (type == '"PJ"') {
+      } else if (type == 'PJ') {
         console.log('Navigating to PendingJobList');
         navigate('Home', {screen: 'PendingJobList'});
       } else if (type === 'J') {
