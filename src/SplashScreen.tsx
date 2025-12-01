@@ -1241,8 +1241,6 @@ const handleUpdate = () => {
     opacity: bottomOpacity.value,
   }));
 const [versionManager, setVersionManager] = useState({
-    visible: false,
-    isForce: false,
     message: '',
   });
   return (
@@ -1274,16 +1272,16 @@ const [versionManager, setVersionManager] = useState({
         visible={versionManager.visible}
         animationType="fade"
         transparent={true}>
-        <View style={styles._modalContainer}>
-          <View style={styles._modalContent}>
+       <View style={styles._modalContainer}>
+          {/* <View style={styles._modalContent}> */}
             <Image
-              source={AppLogo1}
-              style={{width: '100%'}}
+              source={AppLogo}
+              style={{height: 100, width: 100}}
               resizeMode={'contain'}
             />
-          </View>
+          {/* </View> */}
           <View style={styles._txtContainer}>
-            <Text style={styles._txt}>Here is New Version Available</Text>
+            <Text style={styles._txt}>Time for an Update! To keep things running smoothly, please update to the latest version.</Text>
             <Text style={styles._txt}>{versionManager.message}</Text>
           </View>
 
@@ -1335,7 +1333,7 @@ const [versionManager, setVersionManager] = useState({
                 justifyContent: 'center',
                 padding: 8,
                 borderRadius: 8,
-                gap: 10,
+                // gap: 10,
                 backgroundColor: colors.primary,
               }}>
               <Text
@@ -1359,6 +1357,7 @@ const [versionManager, setVersionManager] = useState({
             </TouchableOpacity>
           </View>
         </View>
+     
       </Modal>
     </SafeAreaView>
   );
@@ -1409,11 +1408,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+    marginHorizontal:18
   },
   _modalContent: {
-    width: '40%',
-    height: '20%',
-    backgroundColor: '#ccc',
+    // width: '40%',
+    // height: '20%',
+    // backgroundColor: '#ccc',
     borderRadius: 10,
     padding: 10,
     alignItems: 'center',
@@ -1426,7 +1426,7 @@ const styles = StyleSheet.create({
   _txt: {
     fontFamily: fontFamily,
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
   },
   _bottomTextContainer: {
     position: 'absolute',

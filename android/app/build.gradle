@@ -90,8 +90,8 @@ android {
         applicationId "com.pockit.technician"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 26
-        versionName "2.9.7"
+        versionCode 27
+        versionName "2.9.8"
     }
     signingConfigs {
         debug {
