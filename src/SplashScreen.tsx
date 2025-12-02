@@ -1241,6 +1241,8 @@ const handleUpdate = () => {
     opacity: bottomOpacity.value,
   }));
 const [versionManager, setVersionManager] = useState({
+    visible: false,
+    isForce: false,
     message: '',
   });
   return (
