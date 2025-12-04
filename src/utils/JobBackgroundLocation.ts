@@ -1,98 +1,157 @@
 import Geolocation from 'react-native-geolocation-service';
 import BackgroundService from 'react-native-background-actions';
-import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import { request, PERMISSIONS, RESULTS, openSettings } from 'react-native-permissions';
 import database from '@react-native-firebase/database';
-import {Alert, Platform} from 'react-native';
-import {apiCall} from '../modules';
+import { Alert, Linking, Platform } from 'react-native';
+import { apiCall } from '../modules';
 import moment from 'moment';
-import {useSelector} from '../context';
+import { useSelector } from '../context';
 
-let watchIdRef: {current: number | null} = {current: null};
+let watchIdRef: { current: number | null } = { current: null };
 let lastApiCallTime = 0;
 
 const sleep = (time: number): Promise<void> =>
   new Promise(resolve => setTimeout(resolve, time));
 
-const requestFineLocationPermission = async (): Promise<boolean> => {
+// export const requestFineLocationPermission = async (): Promise<boolean> => {
+//   try {
+//     if (Platform.OS === 'android') {
+//       const fineLocationPermission = await request(
+//         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+
+//       );
+//       if (fineLocationPermission !== RESULTS.GRANTED) {
+//         if (Platform.OS === 'android') {
+//           Alert.alert(
+//             'Location Permission Required',
+//             'Please enable location services to use this feature.',
+//             [
+
+//               { text: 'Cancel', style: 'cancel' },
+//               { text: 'Open Settings', onPress: () => request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION) }
+
+//             ],
+//           );
+//         }
+//         console.warn('Fine location permission not granted.');
+//         return false;
+//       }
+//       // @ts-ignore
+//       if (Platform.Version >= 29) {
+//         console.log('Requesting background location permission for Android 10+');
+//         const backgroundLocationPermission = await request(
+//           PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+//         );
+//         if (backgroundLocationPermission !== RESULTS.GRANTED) {
+//           Alert.alert(
+//             'Background Location Required',
+//             'App needs "Allow all the time" location permission to track in background.',
+//             [
+//               { text: 'Cancel', style: 'cancel' },
+//               { text: 'Open Settings', onPress: () => request(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION) }
+//             ]
+//           );
+//           return false;
+//         }
+//       }
+//       return true;
+//     } else if (Platform.OS === 'ios') {
+//       // Request both when-in-use and always for background location
+//       const whenInUse = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+//       if (whenInUse !== RESULTS.GRANTED) {
+//         console.warn('iOS when-in-use location not granted.');
+//         return false;
+//       }
+//       const always = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+//       if (always !== RESULTS.GRANTED) {
+//         console.warn('iOS always location not granted.');
+//         return false;
+//       }
+//       return true;
+//     }
+//     return false;
+//   } catch (err) {
+//     console.warn('Permission error:', err);
+//     return false;
+//   }
+// };
+
+export const requestFineLocationPermission = async (): Promise<boolean> => {
   try {
     if (Platform.OS === 'android') {
-      const fineLocationPermission = await request(
+      // 1. Request FINE_LOCATION
+      const finePermission = await request(
         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
       );
-      if (fineLocationPermission !== RESULTS.GRANTED) {
-        console.warn('Fine location permission not granted.');
+
+      if (finePermission !== RESULTS.GRANTED) {
+        Alert.alert(
+          'Location Permission Required',
+          'Please enable precise location (GPS) to use this feature.',
+          [
+            {text: 'Cancel', style: 'cancel'},
+            {text: 'Open Settings', onPress: () => openSettings()},
+          ],
+        );
         return false;
       }
-      // @ts-ignore
+
+      // 2. Request BACKGROUND location for Android 10+
       if (Platform.Version >= 29) {
-        const backgroundLocationPermission = await request(
+        const bgPermission = await request(
           PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
         );
-        if (backgroundLocationPermission !== RESULTS.GRANTED) {
+
+        if (bgPermission !== RESULTS.GRANTED) {
+          Alert.alert(
+            'Background Location Required',
+            'Please allow “Allow all the time” so the app can track in background.',
+            [
+              {text: 'Cancel', style: 'cancel'},
+              {text: 'Open Settings', onPress: () => openSettings()},
+            ],
+          );
           return false;
         }
       }
-      return true;
-    } else if (Platform.OS === 'ios') {
-      // Request both when-in-use and always for background location
-      const whenInUse = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-      if (whenInUse !== RESULTS.GRANTED) {
-        console.warn('iOS when-in-use location not granted.');
-        return false;
-      }
-      const always = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
-      if (always !== RESULTS.GRANTED) {
-        console.warn('iOS always location not granted.');
-        return false;
-      }
+
       return true;
     }
+
+    // iOS handling
+    if (Platform.OS === 'ios') {
+      const whenInUse = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      if (whenInUse !== RESULTS.GRANTED) return false;
+
+      const always = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      if (always !== RESULTS.GRANTED) return false;
+
+      return true;
+    }
+
     return false;
   } catch (err) {
     console.warn('Permission error:', err);
     return false;
   }
 };
-// const requestFineLocationPermission = async (): Promise<boolean> => {
-//   try {
-//     const fineLocationPermission = await request(
-//       PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-//     );
-//     if (fineLocationPermission !== RESULTS.GRANTED) {
-//       console.warn('Fine location permission not granted.');
-//       return false;
-//     }
-//     // @ts-ignore
-//     if (Platform.Version >= 29) {
-//       const backgroundLocationPermission = await request(
-//         PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
-//       );
-//       if (backgroundLocationPermission !== RESULTS.GRANTED) {
-//         return false;
-//       }
-//     }
-
-//     return true;
-//   } catch (err) {
-//     console.warn('Permission error:', err);
-//     return false;
-//   }
-// };
 export const JobStartBbService = async (
   jobItem: JobData,
-  user: TechnicianInterface|any,
+  user: TechnicianInterface | any,
 ) => {
   try {
     const hasPermissions = await requestFineLocationPermission();
+    console.log('Location permissions granted:', hasPermissions);
     if (!hasPermissions) return null;
 
     const isRunning = await BackgroundService.isRunning();
+    console.log('Background Service is running:', isRunning);
     if (isRunning) {
       return;
     }
     await BackgroundService.start(
       async taskDataArguments => {
-        const {delay}: any = taskDataArguments;
+        const { delay }: any = taskDataArguments;
 
         watchIdRef.current = Geolocation.watchPosition(
           position => {
@@ -104,7 +163,7 @@ export const JobStartBbService = async (
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
               };
-             
+
               if (coordinates.latitude && coordinates.longitude) {
                 database()
                   .ref(`Jobs/${jobItem.ID}/location`)
@@ -151,10 +210,11 @@ export const JobStartBbService = async (
           error => {
             console.log('Error:', error.code, error.message);
             if (error.code === 1) {
+
               Alert.alert('Location Error', 'Please enable location services.');
             }
           },
-          {enableHighAccuracy: true, distanceFilter: 0},
+          { enableHighAccuracy: true, distanceFilter: 0 },
         );
 
         while (BackgroundService.isRunning()) {

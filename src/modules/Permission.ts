@@ -285,7 +285,7 @@
 
 
 
-import { Platform } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import {
   PERMISSIONS,
   Permission,
@@ -310,9 +310,23 @@ class PermissionClass {
   }
 
   private async _requestPermissionMultiple(permissions: Permission[]): Promise<void> {
+    console.log('Requesting permissions:', permissions);
     const results = await Promise.all(
       permissions.map(permission =>
-        this._checkAndRequestPermission(permission).then(() => true).catch(() => false),
+        this._checkAndRequestPermission(permission).then(() => true).catch(() => {
+       if(Platform.OS==='android'){
+         Alert.alert(
+          'Permission Required',
+          `The app requires ${permission} permission to function properly. Please enable it in settings.`,
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Open Settings', onPress: () => Linking.openSettings() },
+          ],
+        );
+        }
+        return false;
+        }
+      ),
       )
     );
     if (results.includes(false)) {

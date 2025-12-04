@@ -188,6 +188,7 @@ const Dashboard: React.FC<DashboardScreenProps> = ({navigation}) => {
   const checkLocationPermission = async () => {
     try {
       const hasPermission = await Permissions.checkLocation();
+      console.log('Location permission status:', hasPermission);
       if (!hasPermission) {
         await Permissions.requestLocation();
       }
@@ -237,6 +238,7 @@ const Dashboard: React.FC<DashboardScreenProps> = ({navigation}) => {
   };
 
   useEffect(() => {
+    console.log('Checking permissions...');
     checkLocationPermission();
     checkNotificationPermission();
   }, []);

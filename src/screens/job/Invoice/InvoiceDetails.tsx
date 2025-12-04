@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,14 +10,14 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {JobRoutes} from '../../../routes/Job';
-import {apiCall, fontFamily, Size, useTheme} from '../../../modules';
-import {Button, Icon} from '../../../components';
+import { JobRoutes } from '../../../routes/Job';
+import { apiCall, fontFamily, Size, useTheme } from '../../../modules';
+import { Button, Icon } from '../../../components';
 import HappyCode from '../HappyCode';
 import SuccessModal from '../../../components/SuccessModal';
-import {AppLogo, _QR} from '../../../assets';
-import {useSelector} from '../../../context';
-import {resetAndNavigate} from '../../../utils';
+import { AppLogo, _QR } from '../../../assets';
+import { useSelector } from '../../../context';
+import { resetAndNavigate } from '../../../utils';
 import Pdf from 'react-native-pdf';
 import Toast from '../../../components/Toast';
 import { set } from '@react-native-firebase/database';
@@ -25,10 +25,10 @@ import Modal from '../../../components/Modal';
 import QRCode from 'react-native-qrcode-svg';
 
 
-interface InvoiceDetailsProps extends JobRoutes<'InvoiceDetails'> {}
-const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
-  const {user} = useSelector(state => state.app);
-  const {item, partList, data} = route.params;
+interface InvoiceDetailsProps extends JobRoutes<'InvoiceDetails'> { }
+const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) => {
+  const { user } = useSelector(state => state.app);
+  const { item, partList, data } = route.params;
   console.log('partlist details', partList);
   const colors = useTheme();
   const [loader, setLoader] = useState({
@@ -38,15 +38,15 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
     endJob: false,
   });
   const [openScannerModal, setOpenScannerModal] = useState(false);
-  const [QRloader,setQRLoader] = useState(false);
-  const [dataSource, setDataSource] = useState({uri: ''});
+  const [QRloader, setQRLoader] = useState(false);
+  const [dataSource, setDataSource] = useState({ uri: '' });
   const [intervalId, setIntervalId] = useState(null);
 
 
   const [totalAmount, setTotalAmount] = useState(
     parseFloat(String(item?.FINAL_ITEM_AMOUNT || '0')),
   );
-  console.log("\n\n\ndata",item)
+  console.log("\n\n\ndata", item)
   useEffect(() => {
     if (item.TOTAL_AMOUNT && partList.length > 0) {
       const filteredPartList = partList.filter(
@@ -65,9 +65,9 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
         : 0;
       setTotalAmount(
         sum +
-          parseFloat(String(item.TOTAL_AMOUNT)) +
-          EXPRESS_DELIVERY_CHARGES -
-          COUPON_AMOUNT,
+        parseFloat(String(item.TOTAL_AMOUNT)) +
+        EXPRESS_DELIVERY_CHARGES -
+        COUPON_AMOUNT,
       );
     }
   }, []);
@@ -82,12 +82,12 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
     message: '',
   });
   useEffect(() => {
-  return () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-  };
-}, [intervalId]);
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [intervalId]);
   const sendOtp = async () => {
     try {
       let payload = {
@@ -172,10 +172,10 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
       });
     }
   };
- 
-  const onOpenScanner = async() => {
+
+  const onOpenScanner = async () => {
     setQRLoader(true);
-      try {
+    try {
       let payload = {
         ORDER_ID: item.ORDER_ID,
         JOB_CARD_ID: item.ID,
@@ -185,65 +185,65 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
         VENDOR_ID: item.VENDOR_ID || null,
         MOBILE_NO: item.CUSTOMER_MOBILE_NUMBER,
         CART_ID: item.CART_ID || null,
-        
-      
+
+
       };
-      console.log("payload qr",payload)
+      console.log("payload qr", payload)
       const response = await apiCall.post(
         'api/order/createrazOrder',
         payload,
       );
       if (response.data.code == 200) {
-         setQRLoader(false);
-         setDataSource({uri:response.data.data.qr_image_url});
-         setOpenScannerModal(true);
-          startPaymentChecking();
-       console.log("response qr",response.data)
+        setQRLoader(false);
+        setDataSource({ uri: response.data.data.qr_image_url });
+        setOpenScannerModal(true);
+        startPaymentChecking();
+        console.log("response qr", response.data)
       } else {
-         setQRLoader(false);
+        setQRLoader(false);
 
         Alert.alert('Failed to Get QR Code');
       }
     } catch (error) {
-         setQRLoader(false);
+      setQRLoader(false);
 
       console.error('Error in Get QR Code :', error);
       Alert.alert('Error getting QR Code');
     } finally {
-         setQRLoader(false);
-      
+      setQRLoader(false);
+
     }
   }
   const startPaymentChecking = () => {
-  const id = setInterval(() => {
-    checkPaymentStatus();
-  }, 5000); // 5 seconds
+    const id = setInterval(() => {
+      checkPaymentStatus();
+    }, 5000); // 5 seconds
 
-  setIntervalId(id);
-};
+    setIntervalId(id);
+  };
   const checkPaymentStatus = async () => {
-  try {
-   
-    const response = await apiCall.post(
-      "api/paymentGatewayTransactions/get",{
-      filter:`AND CUSTOMER_ID=${item.CUSTOMER_ID}  AND ORDER_ID=${item.ORDER_ID} AND JOB_CARD_ID=${item.ID} AND TECHNICIAN_ID=${item.TECHNICIAN_ID}`
-   } );
+    try {
 
-    if (response.data.code == 200) {
-      console.log("payment status response", response.data);
-      // if (response.data.data.PAYMENT_STATUS === "PAID") {
-        
-      
-      //   clearInterval(intervalId);
-      //   Toast("Payment Received");
-      //  setOpenScannerModal(false);
-      //  paymentReceived();
-      // }
+      const response = await apiCall.post(
+        "api/paymentGatewayTransactions/get", {
+        filter: `AND CUSTOMER_ID=${item.CUSTOMER_ID}  AND ORDER_ID=${item.ORDER_ID} AND JOB_CARD_ID=${item.ID} AND TECHNICIAN_ID=${item.TECHNICIAN_ID}`
+      });
+
+      if (response.data.code == 200) {
+        console.log("payment status response", response.data);
+        // if (response.data.data.PAYMENT_STATUS === "PAID") {
+
+
+        //   clearInterval(intervalId);
+        //   Toast("Payment Received");
+        //  setOpenScannerModal(false);
+        //  paymentReceived();
+        // }
+      }
+    } catch (error) {
+      console.log("payment status error", error);
     }
-  } catch (error) {
-    console.log("payment status error", error);
-  }
-};
+  };
 
   const paymentReceived = async () => {
     try {
@@ -321,7 +321,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <View
         style={{
           backgroundColor: '#FDFDFD',
@@ -344,7 +344,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
             backgroundColor: '#FDFDFD',
           }}>
           <Text
-            style={[styles.headerTxt, {flex: 1, color: colors.primaryText}]}>
+            style={[styles.headerTxt, { flex: 1, color: colors.primaryText }]}>
             {item.SERVICE_NAME}
           </Text>
         </View>
@@ -352,7 +352,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
       <View style={styles.container}>
         {item.CUSTOMER_TYPE == 'I' ? (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <View
                 style={{
                   backgroundColor: '#fff',
@@ -367,7 +367,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                   }}>
-                  <View style={{gap: 6}}>
+                  <View style={{ gap: 6 }}>
                     <Image
                       // source={AppLogo}
                       source={require('../../../assets/images/PockitLogo1.png')}
@@ -543,97 +543,97 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
                       partList
                         .filter(data => data.STATUS === 'AC')
                         .map((item, index) => {
-                          console.log("part item",item)
+                          console.log("part item", item)
                           return (
-                           <View>
-                             <View
-                              key={item.ID}
-                              style={{
-                                flex: 1,
-                                gap: 12,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingTop: 12,
-                              }}>
-                              {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
-                                <Text
-                                  style={{
-                                    flex: 0.7,
+                            <View>
+                              <View
+                                key={item.ID}
+                                style={{
+                                  flex: 1,
+                                  gap: 12,
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  paddingTop: 12,
+                                }}>
+                                {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
+                                  <Text
+                                    style={{
+                                      flex: 0.7,
 
-                                    // maxWidth:'80%',
-                                    fontSize: 13,
-                                    fontWeight: '500',
-                                    fontFamily: fontFamily,
-                                  }}>
-                                  {item.INVENTORY_NAME ?? 0}
-                                </Text>
-                              )}
-                              {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
-                                <Text
-                                  style={{
-                                    flex: 0.3,
-                                    fontSize: 13,
-                                    fontWeight: '500',
-                                    fontFamily: fontFamily,
-                                    textAlign: 'right',
-                                  }}>
-                                  {`₹ ${parseFloat(
-                                    String(item?.RATE + item.TAX_RATE || '0'),
-                                  ).toLocaleString('en-IN', {
-                                    maximumFractionDigits: 2,
-                                  })}`}
-                                </Text>
-                              )}
+                                      // maxWidth:'80%',
+                                      fontSize: 13,
+                                      fontWeight: '500',
+                                      fontFamily: fontFamily,
+                                    }}>
+                                    {item.INVENTORY_NAME ?? 0}
+                                  </Text>
+                                )}
+                                {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
+                                  <Text
+                                    style={{
+                                      flex: 0.3,
+                                      fontSize: 13,
+                                      fontWeight: '500',
+                                      fontFamily: fontFamily,
+                                      textAlign: 'right',
+                                    }}>
+                                    {`₹ ${parseFloat(
+                                      String(item?.RATE + item.TAX_RATE || '0'),
+                                    ).toLocaleString('en-IN', {
+                                      maximumFractionDigits: 2,
+                                    })}`}
+                                  </Text>
+                                )}
 
-                              
-                            </View>
-                             <View
-                              key={item.ID}
-                              style={{
-                                flex: 1,
-                                gap: 12,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingTop: 12,
-                              }}>
-                              {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
-                                <Text
-                                  style={{
-                                    flex: 0.7,
 
-                                    // maxWidth:'80%',
-                                    fontSize: 13,
-                                    fontWeight: '500',
-                                    fontFamily: fontFamily,
-                                  }}>
-                                 Tax
-                                </Text>
-                              )}
-                              {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
-                                <Text
-                                  style={{
-                                    flex: 0.3,
-                                    fontSize: 13,
-                                    fontWeight: '500',
-                                    fontFamily: fontFamily,
-                                    textAlign: 'right',
-                                  }}>
-                                  {`₹ ${parseFloat(
-                                    String(item?.TAX_RATE || '0'),
-                                  ).toLocaleString('en-IN', {
-                                    maximumFractionDigits: 2,
-                                  })}`}
-                                </Text>
-                              )}
+                              </View>
+                              <View
+                                key={item.ID}
+                                style={{
+                                  flex: 1,
+                                  gap: 12,
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  paddingTop: 12,
+                                }}>
+                                {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
+                                  <Text
+                                    style={{
+                                      flex: 0.7,
 
-                              
-                            </View>
+                                      // maxWidth:'80%',
+                                      fontSize: 13,
+                                      fontWeight: '500',
+                                      fontFamily: fontFamily,
+                                    }}>
+                                    Tax
+                                  </Text>
+                                )}
+                                {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
+                                  <Text
+                                    style={{
+                                      flex: 0.3,
+                                      fontSize: 13,
+                                      fontWeight: '500',
+                                      fontFamily: fontFamily,
+                                      textAlign: 'right',
+                                    }}>
+                                    {`₹ ${parseFloat(
+                                      String(item?.TAX_RATE || '0'),
+                                    ).toLocaleString('en-IN', {
+                                      maximumFractionDigits: 2,
+                                    })}`}
+                                  </Text>
+                                )}
+
+
+                              </View>
                             </View>
                           );
                         })}
                   </View>
 
-                  <View style={{height: 10}}></View>
+                  <View style={{ height: 10 }}></View>
                   <View
                     style={{
                       borderColor: colors.subHeading,
@@ -672,14 +672,14 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
             </View>
           </ScrollView>
         ) : (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Pdf
               trustAllCerts={false}
-              source={{cache: false, uri: data}}
-              onLoadComplete={(numberOfPages, filePath) => {}}
-              onPageChanged={(page, numberOfPages) => {}}
-              onError={error => {}}
-              onPressLink={uri => {}}
+              source={{ cache: false, uri: data }}
+              onLoadComplete={(numberOfPages, filePath) => { }}
+              onPageChanged={(page, numberOfPages) => { }}
+              onError={error => { }}
+              onPressLink={uri => { }}
               style={{
                 flex: 1,
                 width: '100%',
@@ -692,14 +692,14 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
         )}
       </View>
 
-<View style={{gap: 12, marginHorizontal: 15, marginTop: 15}}>
+      {/* <View style={{ gap: 12, marginHorizontal: 15, marginTop: 15 }}>
         <Button
           label={'Show QR Code'}
           onPress={onOpenScanner}
           loading={QRloader}
         />
-      </View>
-      <View style={{gap: 12, marginHorizontal: 15, marginTop: 15}}>
+      </View> */}
+      <View style={{ gap: 12, marginHorizontal: 15, marginTop: 15 }}>
         <Button
           label={'Payment Received'}
           onPress={paymentReceived}
@@ -711,7 +711,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
         value={otp.value}
         error={otp.errorMessage}
         loading={loader.sendOtp || loader.verifyOtp}
-        onBack={() => setOtp({...otp, show: false})}
+        onBack={() => setOtp({ ...otp, show: false })}
         onChange={text => {
           setOtp({
             ...otp,
@@ -729,38 +729,38 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({navigation, route}) => {
       />
 
 
- <Modal
-  
-      show={openScannerModal}
-      containerStyle={{margin: 0, maxHeight: '70%'}}
-      style={{
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-        paddingHorizontal: Size.lg,
-      }}
-      onClose={()=>{}}>
-     <View style={{}}>
-         <View style={{alignItems:'center',justifyContent:'center'}}>
-          <TouchableOpacity style={{alignSelf:'flex-end',marginBottom:10}} onPress={()=>setOpenScannerModal(false)}>
-            <Icon name='close' type='AntDesign'></Icon>
-          </TouchableOpacity>
+      <Modal
 
-          <Text style={{ fontSize: 16, fontWeight: '600', textAlign: 'center' }}>
-        Scan to Pay
-      </Text>
+        show={openScannerModal}
+        containerStyle={{ margin: 0, maxHeight: '70%' }}
+        style={{
+          borderBottomLeftRadius: 0,
+          borderBottomRightRadius: 0,
+          paddingHorizontal: Size.lg,
+        }}
+        onClose={() => { }}>
+        <View style={{}}>
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableOpacity style={{ alignSelf: 'flex-end', marginBottom: 10 }} onPress={() => setOpenScannerModal(false)}>
+              <Icon name='close' type='AntDesign'></Icon>
+            </TouchableOpacity>
 
-      <Image
-        source={{ uri: dataSource.uri }}
-        style={{ width: 250, height: 250, alignSelf: 'center', marginVertical: 20 }}
-      />
-          {/* <QRCode
+            <Text style={{ fontSize: 16, fontWeight: '600', textAlign: 'center' }}>
+              Scan to Pay
+            </Text>
+
+            <Image
+              source={{ uri: dataSource.uri }}
+              style={{ width: 250, height: 250, alignSelf: 'center', marginVertical: 20 }}
+            />
+            {/* <QRCode
           size={280}
           
       value={dataSource.uri}
     /> */}
-         </View>
+          </View>
         </View>
-    </Modal>
+      </Modal>
 
     </SafeAreaView>
   );

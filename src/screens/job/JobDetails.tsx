@@ -259,7 +259,10 @@ console.log('first-----',TRACK_STATUS)
     });
   }, []);
   useEffect(() => {
+    console.log('useEffect TRACK_STATUS:', TRACK_STATUS);
+    console.log('TRACK_STATUS changed:', TRACK_STATUS);
     if (TRACK_STATUS === 'ST') {
+      console.log('Starting background service for job tracking');
       JobStartBbService(item, user);
     }
   }, [TRACK_STATUS]);
