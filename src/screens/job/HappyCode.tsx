@@ -143,6 +143,7 @@ const HappyCode: React.FC<HappyCodeProps> = ({
                   onTextChange={text => onChange(text)}
                   autoFocus
                   blurOnFilled
+                  
                   theme={{
                     containerStyle: {
                       justifyContent: 'center',

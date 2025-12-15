@@ -1077,21 +1077,19 @@ console.log('first-----',TRACK_STATUS)
           <Button
             label="Arrived"
             onPress={() => {
-              handleReached();
+              // handleReached();
 
-              // if (user?.IS_REMOTE_TECHNICIAN == true) {
-              //   handleReached();
-              // }
-              // else {
-              //   if (isWithinRange) {
-              //     handleReached();
-              //   } else {
-              //     //   // Only show toast when button is clicked and not in range
-              //     Toast(
-              //       'You are not within 150 meters of the destination location',
-              //     );
-              //   }
-              // }
+            const isRemoteTech = user?.IS_REMOTE_TECHNICIAN ?? false;
+
+if (isRemoteTech) {
+  handleReached();
+} else {
+  if (isWithinRange) {
+    handleReached();
+  } else {
+    Toast('You are not within 150 meters of the destination location');
+  }
+}
 
             }}
             loading={loader.reached}

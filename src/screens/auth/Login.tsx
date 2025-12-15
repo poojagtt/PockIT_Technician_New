@@ -12,6 +12,7 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  NativeModules,
 } from 'react-native';
 import {fontFamily, GlobalStyle, Size, useTheme} from '../../modules/themes';
 import {AppLogo, left, right} from '../../assets';
@@ -166,7 +167,7 @@ const Login: React.FC<LoginProps> = () => {
       })
       .finally(() => setLoading(false));
   };
-  const onOTPVerify = async () => {
+  const onOTPVerify = async (otp) => {
     try {
       setLoading(true);
       const CLOUD_ID = await messaging().getToken();
@@ -179,7 +180,7 @@ const Login: React.FC<LoginProps> = () => {
       apiCall
         .post('app/technician/verifyOTP', {
           TYPE_VALUE: mobile.value,
-          OTP: otp.value,
+          OTP: otp,
           CLOUD_ID,
           DEVICE_TYPE: 'M',
           DEVICE_ID: deviceDetails.deviceId,
@@ -367,6 +368,16 @@ const Login: React.FC<LoginProps> = () => {
       setShowDropdown(false);
     }
   };
+
+  // Initiate WhatsApp handshake when the modal opens (required for zero/one-tap)
+    // useEffect(() => {
+    //   const waModule = NativeModules.WhatsAppOtpModule;
+    //   if (Platform.OS === 'android' && waModule?.initiateHandshake) {
+    //     waModule.initiateHandshake().catch((err: any) =>
+    //       console.warn('Failed to start WhatsApp OTP handshake', err),
+    //     );
+    //   }
+    // }, []);
   return (
     <SafeAreaView
       style={{
@@ -457,7 +468,23 @@ const Login: React.FC<LoginProps> = () => {
                 Login
               </Text>
             </View>
-
+  {/* {Platform.OS === 'android' ? (
+                <Text
+                  onPress={() => {
+                    const waModule = (NativeModules as any).WhatsAppOtpModule;
+                    waModule?.initiateHandshake?.().catch((e: any) =>
+                      console.warn('Manual WA handshake failed', e),
+                    );
+                  }}
+                  style={{
+                    textAlign: 'center',
+                    color: colors.primary2,
+                    textDecorationLine: 'underline',
+                    marginBottom: 8,
+                  }}>
+                  Tap to re-initiate WhatsApp OTP handshake (debug)
+                </Text>
+              ) : null} */}
             {error.value && (
               <Text
                 style={{

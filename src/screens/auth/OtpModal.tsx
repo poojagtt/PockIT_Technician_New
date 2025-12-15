@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Modal, SafeAreaView, Image} from 'react-native';
-import {fontFamily, GlobalStyle, Size, useTheme} from '../../modules';
-import {Button, Icon} from '../../components';
-import {OtpInput} from 'react-native-otp-entry';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Modal, SafeAreaView, Image } from 'react-native';
+import { fontFamily, GlobalStyle, Size, useTheme } from '../../modules';
+import { Button, Icon } from '../../components';
+import { OtpInput } from 'react-native-otp-entry';
 import { left, right } from '../../assets';
 
 interface OtpModalProps {
   visible: boolean;
   onBack: () => void;
   value: string;
-  onSuccess: () => void;
+  onSuccess: (otp: string) => void;
   onChange: (otp: string) => void;
   onResend: () => void;
   sendTo: string;
@@ -50,8 +50,8 @@ const OtpModal: React.FC<OtpModalProps> = ({
       onRequestClose={() => {
         onBack();
       }}>
-      <SafeAreaView style={{flex: 1, backgroundColor: colors.white}}>
-        <View style={{flex: 1}}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               position: 'absolute',
@@ -65,7 +65,7 @@ const OtpModal: React.FC<OtpModalProps> = ({
                 position: 'absolute',
                 left: -Size.containerPadding,
                 top: '50%',
-                transform: [{translateY: '-50%'}],
+                transform: [{ translateY: '-50%' }],
                 height: '100%',
                 resizeMode: 'contain',
                 opacity: 1,
@@ -77,7 +77,7 @@ const OtpModal: React.FC<OtpModalProps> = ({
                 position: 'absolute',
                 right: -Size.containerPadding,
                 top: '16%',
-                transform: [{translateY: '-50%'}],
+                transform: [{ translateY: '-50%' }],
                 height: '100%',
                 resizeMode: 'contain',
                 opacity: 1,
@@ -101,8 +101,8 @@ const OtpModal: React.FC<OtpModalProps> = ({
                 onBack();
               }}
             />
-            <View style={{flex: 1, justifyContent: 'center'}}>
-              <View style={{gap: 8}}>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <View style={{ gap: 8 }}>
                 <Text
                   style={[
                     {
@@ -159,9 +159,14 @@ const OtpModal: React.FC<OtpModalProps> = ({
                   marginVertical: Size['2xl'],
                 }}>
                 <OtpInput
+
                   key={resetKey}
                   numberOfDigits={4}
-                  onTextChange={text => onChange(text)}
+                  onTextChange={text => {
+                    onChange(text);
+
+                  }
+                  }
                   autoFocus
                   blurOnFilled
                   theme={{
@@ -218,10 +223,13 @@ const OtpModal: React.FC<OtpModalProps> = ({
                   }}
                   onFilled={text => {
                     onChange(text);
+                    if (text.length === 4) {
+                      onSuccess(text);
+                    }
                   }}
                 />
               </View>
-              <View style={{gap: 8}}>
+              <View style={{ gap: 8 }}>
                 {timer > 0 ? (
                   <Text
                     style={[
@@ -269,7 +277,7 @@ const OtpModal: React.FC<OtpModalProps> = ({
                 </Text>
               </View>
             </View>
-            <View style={{justifyContent: 'flex-end'}}>
+            <View style={{ justifyContent: 'flex-end' }}>
               <Button
                 onPress={() => onSuccess()}
                 label={'Verify'}

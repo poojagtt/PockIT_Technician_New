@@ -23,6 +23,7 @@ import Toast from '../../../components/Toast';
 import { set } from '@react-native-firebase/database';
 import Modal from '../../../components/Modal';
 import QRCode from 'react-native-qrcode-svg';
+import { qr } from '../../../assets';
 
 
 interface InvoiceDetailsProps extends JobRoutes<'InvoiceDetails'> { }
@@ -81,13 +82,13 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
     visible: false,
     message: '',
   });
-  useEffect(() => {
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [intervalId]);
+  // useEffect(() => {
+  //   return () => {
+  //     if (intervalId) {
+  //       clearInterval(intervalId);
+  //     }
+  //   };
+  // }, [intervalId]);
   const sendOtp = async () => {
     try {
       let payload = {
@@ -174,53 +175,54 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
   };
 
   const onOpenScanner = async () => {
-    setQRLoader(true);
-    try {
-      let payload = {
-        ORDER_ID: item.ORDER_ID,
-        JOB_CARD_ID: item.ID,
-        CUSTOMER_ID: item.CUSTOMER_ID,
-        SERVICE_ID: item.SERVICE_ID,
-        TECHNICIAN_ID: item.TECHNICIAN_ID,
-        VENDOR_ID: item.VENDOR_ID || null,
-        MOBILE_NO: item.CUSTOMER_MOBILE_NUMBER,
-        CART_ID: item.CART_ID || null,
+    setOpenScannerModal(true);
+    // setQRLoader(true);
+    // try {
+    //   let payload = {
+    //     ORDER_ID: item.ORDER_ID,
+    //     JOB_CARD_ID: item.ID,
+    //     CUSTOMER_ID: item.CUSTOMER_ID,
+    //     SERVICE_ID: item.SERVICE_ID,
+    //     TECHNICIAN_ID: item.TECHNICIAN_ID,
+    //     VENDOR_ID: item.VENDOR_ID || null,
+    //     MOBILE_NO: item.CUSTOMER_MOBILE_NUMBER,
+    //     CART_ID: item.CART_ID || null,
 
 
-      };
-      console.log("payload qr", payload)
-      const response = await apiCall.post(
-        'api/order/createrazOrder',
-        payload,
-      );
-      if (response.data.code == 200) {
-        setQRLoader(false);
-        setDataSource({ uri: response.data.data.qr_image_url });
-        setOpenScannerModal(true);
-        startPaymentChecking();
-        console.log("response qr", response.data)
-      } else {
-        setQRLoader(false);
+    //   };
+    //   console.log("payload qr", payload)
+    //   const response = await apiCall.post(
+    //     'api/order/createrazOrder',
+    //     payload,
+    //   );
+    //   if (response.data.code == 200) {
+    //     setQRLoader(false);
+    //     setDataSource({ uri: response.data.data.qr_image_url });
+    //     setOpenScannerModal(true);
+    //     // startPaymentChecking();
+    //     console.log("response qr", response.data)
+    //   } else {
+    //     setQRLoader(false);
 
-        Alert.alert('Failed to Get QR Code');
-      }
-    } catch (error) {
-      setQRLoader(false);
+    //     Alert.alert('Failed to Get QR Code');
+    //   }
+    // } catch (error) {
+    //   setQRLoader(false);
 
-      console.error('Error in Get QR Code :', error);
-      Alert.alert('Error getting QR Code');
-    } finally {
-      setQRLoader(false);
+    //   console.error('Error in Get QR Code :', error);
+    //   Alert.alert('Error getting QR Code');
+    // } finally {
+    //   setQRLoader(false);
 
-    }
+    // }
   }
-  const startPaymentChecking = () => {
-    const id = setInterval(() => {
-      checkPaymentStatus();
-    }, 5000); // 5 seconds
+  // const startPaymentChecking = () => {
+  //   const id = setInterval(() => {
+  //     checkPaymentStatus();
+  //   }, 5000); // 5 seconds
 
-    setIntervalId(id);
-  };
+  //   setIntervalId(id);
+  // };
   const checkPaymentStatus = async () => {
     try {
 
@@ -692,13 +694,13 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
         )}
       </View>
 
-      {/* <View style={{ gap: 12, marginHorizontal: 15, marginTop: 15 }}>
+      <View style={{ gap: 12, marginHorizontal: 15, marginTop: 15 }}>
         <Button
           label={'Show QR Code'}
           onPress={onOpenScanner}
           loading={QRloader}
         />
-      </View> */}
+      </View>
       <View style={{ gap: 12, marginHorizontal: 15, marginTop: 15 }}>
         <Button
           label={'Payment Received'}
@@ -732,15 +734,16 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
       <Modal
 
         show={openScannerModal}
-        containerStyle={{ margin: 0, maxHeight: '70%' }}
+        containerStyle={{ margin: 0, maxHeight: '70%', backgroundColor:'white' }}
         style={{
           borderBottomLeftRadius: 0,
           borderBottomRightRadius: 0,
           paddingHorizontal: Size.lg,
         }}
-        onClose={() => { }}>
-        <View style={{}}>
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        onClose={() => { }}
+        >
+        <View>
+          {/* <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <TouchableOpacity style={{ alignSelf: 'flex-end', marginBottom: 10 }} onPress={() => setOpenScannerModal(false)}>
               <Icon name='close' type='AntDesign'></Icon>
             </TouchableOpacity>
@@ -750,15 +753,63 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
             </Text>
 
             <Image
-              source={{ uri: dataSource.uri }}
+              source={ qr }
               style={{ width: 250, height: 250, alignSelf: 'center', marginVertical: 20 }}
             />
-            {/* <QRCode
+           <QRCode
           size={280}
           
       value={dataSource.uri}
-    /> */}
+    /> 
+          </View> */}
+          <View
+            style={{
+                justifyContent: 'center',
+              alignItems: 'center',
+              // padding: 20,
+              // backgroundColor: '#fff',
+            }}
+          >
+
+            {/* QR Image */}
+            <View
+              style={{
+                width: 400,
+                height: 400,
+                // borderRadius: 12,
+                // overflow: 'hidden',
+                // // backgroundColor: '#f5f5f5',
+                // justifyContent: 'center',
+                // alignItems: 'center',
+                // elevation: 4,
+                // shadowColor: '#000',
+                // shadowOpacity: 0.2,
+                // shadowRadius: 6,
+              }}
+            >
+              <Image
+                source={qr}
+                resizeMode="contain"
+                style={{ width: '100%', height: '100%' }}
+              />
+                            {/* Close Button */}
+
+            </View>
+            <TouchableOpacity
+              onPress={() => setOpenScannerModal(false)}
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                // padding: 8,
+                // backgroundColor: '#00000030',
+                borderRadius: 20,
+              }}
+            >
+              <Icon name="close" type="AntDesign" size={20} color="#000" />
+            </TouchableOpacity>
           </View>
+
         </View>
       </Modal>
 

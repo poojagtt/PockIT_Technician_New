@@ -1,5 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+  <queries>
+    <package android:name="com.whatsapp" />
+    <package android:name="com.whatsapp.w4b" />
+  </queries>
+
  <uses-permission android:name="android.permission.INTERNET" />
   <!-- PERMISSION CONFIG -->
   <!-- <uses-permission android:name="android.permission.ACCEPT_HANDOVER" /> -->
@@ -11,6 +16,8 @@
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
   <uses-permission android:name="android.permission.WAKE_LOCK" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" /> -->
+
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
 
@@ -43,5 +50,23 @@
             android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask"
             android:foregroundServiceType="dataSync"
             android:exported="false" />
+
+         <receiver
+    android:name=".OtpReceiver"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
+    </intent-filter>
+</receiver>
+
+<receiver
+    android:name=".OtpCodeReceiver"
+    android:enabled="true"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="com.whatsapp.otp.OTP_RETRIEVED" />
+    </intent-filter>
+</receiver>
+
     </application>
 </manifest>

@@ -1,93 +1,10 @@
-// import React from 'react';
-// import {KeyboardAvoidingView, Platform, StatusBar, Text, View} from 'react-native';
-// import {useSelector} from './src/context';
-// import {BASE_URL, fontFamily, useTheme} from './src/modules';
-// import SplashScreen from './src/SplashScreen';
-// import Routes from './src/routes';
-
-// import {
-//   configureReanimatedLogger,
-//   ReanimatedLogLevel,
-// } from 'react-native-reanimated';
-// import {Login} from './src/screens';
-// import { SafeAreaView } from 'react-native-safe-area-context';
-
-// declare global {
-//   var RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS: boolean;
-// }
-
-// globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
-// configureReanimatedLogger({
-//   level: ReanimatedLogLevel.warn,
-//   strict: false,
-// });
-
-
-
-// type AppProps = {};
-// const App: React.FC<AppProps> = () => {
-//   const {splash, user} = useSelector(state => state.app);
-//   const color = useTheme();
-  
-//   return (
-//     <SafeAreaView style={{flex: 1, backgroundColor: color.background}}>
-//       <StatusBar
-//        translucent={false} 
-//         barStyle={Platform.OS === 'ios' ? 'dark-content' : 'dark-content'}
-//         backgroundColor={color.primary2}
-//       />
-//       <KeyboardAvoidingView style={{flex: 1}} behavior={'height'}>
-//         {/* <View
-//           style={{
-//             zIndex: 1000,
-//             position: 'absolute',
-//             top: 0,
-//             alignSelf: 'flex-end',
-//             paddingVertical: 3,
-//             opacity: 0.8,
-//             backgroundColor:
-//               BASE_URL == 'https://pockitadmin.uvtechsoft.com:8767/'
-//                 ? color.primary
-//                 : color.secondary,
-//             justifyContent: 'center',
-//             alignItems: 'center',
-//             paddingHorizontal: 10,
-//             borderRadius: 4,
-//             borderTopRightRadius: 0,
-//             shadowColor: '#000',
-//             shadowOffset: {
-//               width: 0,
-//               height: 2,
-//             },
-//             shadowOpacity: 0.25,
-//             shadowRadius: 3.84,
-//             elevation: 5,
-//           }}>
-//           <Text
-//             style={{
-//               color: '#FFF',
-//               fontWeight: 'bold',
-//               fontSize: 12,
-//                fontFamily: fontFamily,
-//             }}>
-//             Pre Release
-//           </Text>
-//         </View> */}
-//         {splash ? <SplashScreen /> : user ? <Routes /> : <Login />}
-//       </KeyboardAvoidingView>
-//     </SafeAreaView>
-//   );
-// };
-// export default App;
-
-
-
-import React from 'react';
-import { Platform, StatusBar, Text, TextInput, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { NativeModules, Platform, StatusBar, Text, TextInput, View } from 'react-native';
 import { useSelector } from './src/context';
 import { useTheme } from './src/modules';
 import SplashScreen from './src/SplashScreen';
 import Routes from './src/routes';
+
 import {
   SafeAreaProvider,
   SafeAreaView,
@@ -118,8 +35,16 @@ configureReanimatedLogger({
 const AppContent: React.FC = () => {
   const { splash, user } = useSelector(state => state.app);
   const color = useTheme();
-  const insets = useSafeAreaInsets();
+  // const { HashModule } = NativeModules;
 
+  const insets = useSafeAreaInsets();
+// useEffect(() => {
+//   const getHash=async()=>{
+//     const hash=await HashModule.getAppHash();
+//     console.log('\n\n\n\nApp Hash: ', hash);
+//   }
+//   getHash();
+// }, []);
   return (
     <SafeAreaView
       style={{

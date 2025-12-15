@@ -15,6 +15,7 @@ export const _laptop = require('./images/laptop.png');
 export const _QR = require('./images/QR.jpg');
 export const right = require('./images/right.png');
 export const left = require('./images/left.png');
+export const qr = require('./images/pockit_qr.jpg');
 
 
 import Profile from './svg/profile.svg';
