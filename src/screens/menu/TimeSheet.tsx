@@ -676,6 +676,8 @@ const RescheduleJobModal = React.memo(
             filter: ` AND IS_ACTIVE = 1 AND TYPE = 'OR' `,
           })
           .then(res => {
+          console.log('api/cancleOrderReason/get', res.data);
+
             if (res.data.code === 200) {
               setReasons(res.data.data);
             }
@@ -1777,6 +1779,7 @@ const TimeSheet: React.FC<TimeSheetProps> = React.memo(({navigation}) => {
             YEAR: year.toString(),
           },
         );
+        console.log('Employee Data Response:', response.data);
         setEmployeeData(response.data.data);
       } catch (err) {
         console.error(
@@ -1798,6 +1801,7 @@ const TimeSheet: React.FC<TimeSheetProps> = React.memo(({navigation}) => {
       const response = await apiCall.post('api/technician/getData', {
         filter: ` AND IS_ACTIVE = 1 AND ID = ${user?.ID}`,
       });
+      console.log('api/technician/getData:', response.data);
       setGlobalSettings(response.data.data2);
     } catch (err) {
       console.error(

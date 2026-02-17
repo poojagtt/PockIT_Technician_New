@@ -59,6 +59,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
           filter: ` AND TECHNICIAN_ID = ${user?.ID} AND IS_ACTIVE = 1 `,
         })
         .then(res => res.data);
+        console.log('Languages Response:', response.data);
       if (response.data && response.code == 200) {
         setLanguages(response.data);
         const data = response.data.filter(item => item.IS_PRIMARY == 1);

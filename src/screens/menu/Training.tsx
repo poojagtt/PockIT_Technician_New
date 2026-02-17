@@ -57,7 +57,7 @@ const Training: React.FC<TrainingProps> = ({navigation}) => {
         response.data.data.length > 0
       ) {
         const categoryMap = new Map();
-
+console.log('Training Services Response:', response.data);
         response.data.data.forEach((job: any) => {
           if (!categoryMap.has(job.CATEGORY_ID)) {
             categoryMap.set(job.CATEGORY_ID, {

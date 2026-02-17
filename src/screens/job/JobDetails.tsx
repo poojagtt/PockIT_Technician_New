@@ -93,7 +93,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({ navigation, route }) => {
   const [isWithinRange, setIsWithinRange] = useState(false);
   // @ts-ignore
   const locationIntervalRef = useRef<NodeJS.Timeout>();
-console.log('first-----',TRACK_STATUS)
+  console.log('first-----', TRACK_STATUS)
   useFocusEffect(
     React.useCallback(() => {
       const backAction = () => {
@@ -237,7 +237,7 @@ console.log('first-----',TRACK_STATUS)
       showMenu: false,
     }));
   };
-// 
+  // 
   // console.log('item in job details', item);
 
 
@@ -279,6 +279,7 @@ console.log('first-----',TRACK_STATUS)
         JOB_DATA: [{ ...item, TECHNICIAN_NAME: user?.NAME }],
       };
       apiCall.post('api/technician/updateJobStatus', body).then(async res => {
+        console.log('\n\n\n\n\n here res updateJobStatus', res);
         if (res.status == 200 && res.data.code == 200) {
           setLoader({ ...loader, initiate: false });
           setShowSuccess({ ...showSuccess, initiate: true });
@@ -1077,19 +1078,19 @@ console.log('first-----',TRACK_STATUS)
           <Button
             label="Arrived"
             onPress={() => {
-              // handleReached();
+              handleReached();
 
-            const isRemoteTech = user?.IS_REMOTE_TECHNICIAN ?? false;
+              // const isRemoteTech = user?.IS_REMOTE_TECHNICIAN ?? false;
 
-if (isRemoteTech) {
-  handleReached();
-} else {
-  if (isWithinRange) {
-    handleReached();
-  } else {
-    Toast('You are not within 150 meters of the destination location');
-  }
-}
+              // if (isRemoteTech) {
+              //   handleReached();
+              // } else {
+              //   if (isWithinRange) {
+              //     handleReached();
+              //   } else {
+              //     Toast('You are not within 150 meters of the destination location');
+              //   }
+              // }
 
             }}
             loading={loader.reached}

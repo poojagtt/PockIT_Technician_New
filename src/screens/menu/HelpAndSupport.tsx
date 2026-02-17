@@ -38,6 +38,7 @@ const HelpandSupport: React.FC<HelpandSupportProps> = ({navigation}) => {
         filter: ` AND STATUS = 1 AND FAQ_HEAD_TYPE = 'T'`,
       });
       if (res.data && Array.isArray(res.data.data)) {
+        console.log('FAQ Heads Response:', res.data.data);
         const formattedFaqs = res.data.data.map((item: any) => ({
           id: item.ID,
           name: item.NAME,

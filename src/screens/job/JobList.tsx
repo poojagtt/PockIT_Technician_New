@@ -178,6 +178,7 @@ const JobList: React.FC<JobListProps> = ({navigation}) => {
       apiCall
         .post('api/jobCard/get', {filter: filterCondition})
         .then(res => {
+          console.log('api/jobCard/get', res.data);
           if (res.data.code === 200) {
             setJobs({...jobs, JobListAssigned: res.data.data, loading: false});
           } else {

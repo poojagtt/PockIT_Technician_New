@@ -39,6 +39,8 @@ import {RootState} from '../../context/reducers/store';
 import messaging from '@react-native-firebase/messaging';
 import {requestNotifications} from 'react-native-permissions';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import analytics from '@react-native-firebase/analytics';
+
 
 interface JOB_WISE_EARNINGS {
   JOB_COMPLETED_DATETIME: string;
@@ -145,6 +147,8 @@ const Dashboard: React.FC<DashboardScreenProps> = ({navigation}) => {
           ],
         },
       });
+        console.log('New channels to subscribe:', res.data.data);
+
 
       if (res.status === 200) {
         const newChannels = res.data.data;
@@ -184,6 +188,16 @@ const Dashboard: React.FC<DashboardScreenProps> = ({navigation}) => {
     });
     return unsubscribe;
   }, []);
+
+  useFocusEffect(
+  useCallback(() => {
+    analytics().logScreenView({
+      screen_name: 'HomeScreen',
+      screen_class: 'HomeScreen',
+    });
+    console.log("analytics");
+  }, [])
+);
 
   const checkLocationPermission = async () => {
     try {
@@ -253,7 +267,7 @@ const Dashboard: React.FC<DashboardScreenProps> = ({navigation}) => {
         })
         .then(res => {
           if (res.status === 200 && res.data.code === 200) {
-            // console.log('345678p[////', res.data);
+            console.log('api/jobCard/getJobsForTechnician', res.data);
             setInitiatedJobs(res.data.data);
           }
         })
@@ -334,6 +348,7 @@ const Dashboard: React.FC<DashboardScreenProps> = ({navigation}) => {
       apiCall
         .post('api/reports/getTechnicianEarnings', body)
         .then(res => {
+          console.log('Earnings response:', res.data);
           if (res.status === 200 && res.data.code === 200) {
             const today = res.data.JOB_WISE_EARNINGS.filter(
               (job: JOB_WISE_EARNINGS) =>

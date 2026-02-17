@@ -1106,11 +1106,7 @@ const checkVersion = async () => {
     const version = DeviceInfo.getVersion();
     const res = await apiCall.post(`globalSetting/getVersion`);
     const { CUR_VERSION } = res.data.data[0].TECHNICIAN_CUR_VERSION;
-    console.log("res",res.data.data[0].TECHNICIAN_CUR_VERSION)
-console.log("admin panel current version",CUR_VERSION);
-console.log("&&&&&admin panel current version",res.data.data[0].TECHNICIAN_CUR_VERSION >= version);
-
-console.log("mobile current version",version);
+   
 
     if (res.data.data[0].TECHNICIAN_CUR_VERSION <= version) {
       setIsVersionOK(true); // ✅ Safe to continue

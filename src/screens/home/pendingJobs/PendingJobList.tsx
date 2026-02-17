@@ -112,6 +112,7 @@ const PendingJobList: React.FC<PendingJobListProps> = ({navigation}) => {
           TECHNICIAN_ID: user?.ID,
         })
         .then(res => {
+          console.log('getHolidays res.....', res.data);
           if (res.status === 200) {
             const data1 = res.data.DATA1.map((item: any) => ({
               WEEK_DAY: item.WEEK_DAY,

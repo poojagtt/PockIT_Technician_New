@@ -1020,7 +1020,7 @@ console.log('toValue****',toValue);
         })
         .then(res => {
           if (res.status === 200) {
-            // console.log('\nadmin holiday', res.data.DATA1);
+            console.log('\nadmin holiday', res.data.DATA1);
             // console.log('\nself holiday', res.data.DATA2);
   
             const data1 = res.data.DATA1.map((item: any) => ({

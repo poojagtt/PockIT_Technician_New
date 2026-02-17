@@ -68,6 +68,7 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
           TECHNICIAN_ID: user?.ID,
         })
         .then(res => {
+          console.log('\n\n getItemsForTechnician res....', res);
           if (res.data.code === 200) {
             setInventories(res.data.data);
           }
@@ -230,7 +231,10 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
           TECHNICIAN_ID: user?.ID,
         })
         .then(res => {
+            console.log("api/inventoryCategory/getCategoryForTechnician",res.data.data)
+
           if (res.data.code === 200) {
+            console.log("api/inventoryCategory/getCategoryForTechnician",res.data.data)
             const sortedCategories = res.data.data.sort(
               (a: Category, b: Category) =>
                 a.CATEGORY_NAME.localeCompare(b.CATEGORY_NAME),
@@ -311,6 +315,7 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
         INVENTORY_DATA,
       };
       apiCall.post(`api/inventoryRequest/addInventory`, body).then(res => {
+        console.log('\n\naddInventory res....', res);
         if (res.status === 200 && res.data.code === 200) {
           dispatch(Reducers.clearSelectedItems());
           setShowSuccess(true);

@@ -224,6 +224,7 @@ const JobFlow: React.FC<JobFlowProps> = ({navigation, route}) => {
         filter: `AND JOB_CARD_ID=${item.ID} AND ORDER_ID = ${item.ORDER_ID}`,
       };
       const response = await apiCall.post('api/jobPhotosDetails/get', payload);
+      console.log('getPhotos response', response);
       if (response.data && response.data.code === 200) {
         setPhotos(response.data.data);
       } else {
@@ -523,6 +524,7 @@ const JobFlow: React.FC<JobFlowProps> = ({navigation, route}) => {
           filter: ` AND CUSTOMER_ID = ${item.CUSTOMER_ID} AND JOB_CARD_ID = ${item.ID} `,
         })
         .then(res => {
+          console.log('api/inventoryRequestDetails/get', res.data);
           if (res.data.code == 200) {
             setPartList(res.data.data);
           }

@@ -67,6 +67,9 @@ const PartsInventory: React.FC<partsInventory> = ({navigation, route}) => {
           TECHNICIAN_ID: user?.ID,
         })
         .then(res => {
+          console.log(")))",res.data.code);
+            console.log('\n\n getItemsForTechnician res data....', res.data.data);
+
           if (res.data.code === 200) {
             setInventories(res.data.data);
             setListLoading(false);
@@ -183,6 +186,7 @@ const PartsInventory: React.FC<partsInventory> = ({navigation, route}) => {
         INVENTORY_DATA,
       };
       apiCall.post(`api/inventoryRequest/addInventory`, body).then(res => {
+        console.log('\n\naddInventory res....', res);
         if (res.status === 200 && res.data.code === 200) {
           setAddLoading(false);
           dispatch(Reducers.clearSelectedItems());
@@ -298,7 +302,9 @@ const PartsInventory: React.FC<partsInventory> = ({navigation, route}) => {
         INVENTORY_DATA,
         CUSTOMER_TYPE: jobItem.CUSTOMER_TYPE,
       };
+      console.log('body....', body);
       apiCall.post(`api/inventoryRequest/addInventory`, body).then(res => {
+        console.log('\n\naddInventory res....', res);
         if (res.status === 200 && res.data.code === 200) {
           dispatch(Reducers.clearSelectedItems());
 

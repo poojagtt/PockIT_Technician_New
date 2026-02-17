@@ -25,7 +25,10 @@ export const getUserInfo = createAsyncThunk<
     userData = await apiCall
       .post(`api/technician/get`, {filter: ` AND ID = ${user} `})
       .then(res => {
+          console.log('api/technician/get', res.data.data);
+
         if (res.data.code == 200) {
+          console.log('api/technician/get', res.data.data);
           useStorage.set('userName', res.data.data[0].NAME);
           console.log('res.data.data[0].CAN_ACCEPT_JOB', res.data.data[0].CAN_ACCEPT_JOB);
           useStorage.set('acceptPermission', parseInt(res.data.data[0].CAN_ACCEPT_JOB));
@@ -100,6 +103,7 @@ export const updateTechStatus = createAsyncThunk<
       CLIENT_ID: 1,
     };
     const res = await apiCall.post(`api/technicainDayLog/addLog`, body);
+    console.log('updateTechStatus Response:', res.data);
     if (res.status === 200 && res.data.code === 200) {
       useStorage.set('TECH_ENABLE_STATUS', status);
       return {techStatus: status};

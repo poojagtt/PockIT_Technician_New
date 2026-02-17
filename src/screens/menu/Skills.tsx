@@ -72,10 +72,13 @@ const Skills: React.FC<SkillsProps> = ({navigation}) => {
           filter: ` AND TECHNICIAN_ID = ${user?.ID} AND IS_ACTIVE = 1 `,
         })
         .then(res => res.data);
+        console.log('Skills Response:', response.data);
+
       if (response.data && response.code == 200) {
         const res = await apiCall.post('api/technicianSkillRequest/get', {
           filter: ` AND TECHNICIAN_ID = ${user?.ID} AND STATUS != 'A' `,
         });
+        console.log('Pending Skills Response:', res.data);
         setPendingSkillId(
           res.data.data.map(
             (item: any) => item.STATUS == 'P' && item.SKILL_IDS,

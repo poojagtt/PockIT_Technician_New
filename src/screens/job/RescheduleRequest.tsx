@@ -58,6 +58,7 @@ const RescheduleRequest = ({
           filter: ` AND IS_ACTIVE = 1 AND TYPE = 'OR' `,
         })
         .then(res => {
+          console.log('api/cancleOrderReason/get', res.data);
           if (res.data.code === 200) {
             setReasons(res.data.data);
           }

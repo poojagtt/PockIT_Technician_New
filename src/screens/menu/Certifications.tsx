@@ -82,6 +82,8 @@ const Certifications: React.FC<CertificationsProps> = ({navigation}) => {
           filter: ` AND TECHNICIAN_ID = ${ID} AND IS_DELETE = 0 `,
         })
         .then(res => res.data);
+        console.log('Certifications Response:', response.data);
+
       if (response.data && response.data.length > 0) {
         const formattedData = response.data.map((cert: any) => ({
           ...cert,
@@ -100,7 +102,7 @@ const Certifications: React.FC<CertificationsProps> = ({navigation}) => {
         setCertifications([]);
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error fetching user databbbbbb:', error);
       Alert.alert('Error fetching user data');
     }
     setLoading(false);

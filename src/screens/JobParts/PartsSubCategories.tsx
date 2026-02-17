@@ -100,6 +100,7 @@ const PartsSubCategories: React.FC<PartsSubCategories> = ({
         })
         .then(res => {
           if (res.data.code === 200) {
+            console.log("api/inventorySubCategory/getSubCategoryForTechnician",res.data.data)
             const sortedCategories = res.data.data.sort(
               (a: Category, b: Category) => a.NAME.localeCompare(b.NAME),
             );
@@ -301,7 +302,9 @@ const PartsSubCategories: React.FC<PartsSubCategories> = ({
         CLIENT_ID: 1,
         INVENTORY_DATA,
       };
+      console.log('body....', body);
       apiCall.post(`api/inventoryRequest/addInventory`, body).then(res => {
+        console.log('\n\naddInventory with email res....', res);
         setAddLoading(false);
         if (res.status === 200 && res.data.code === 200) {
           dispatch(Reducers.clearSelectedItems());

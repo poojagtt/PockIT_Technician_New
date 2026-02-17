@@ -191,6 +191,7 @@ const TechnicianBackOfficeChat: React.FC<TechnicianBackOfficeChat> = ({
           filter: ` AND ID=${jobItem.TERRITORY_ID}`,
         })
         .then(res => {
+          console.log('territory/get', res.data);
           if (res.status === 200 && res.data.code === 200) {
             setSupportContactNo(res.data.data[0].SUPPORT_CONTACT_NUMBER);
           }
