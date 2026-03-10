@@ -16,7 +16,9 @@ export const _QR = require('./images/QR.jpg');
 export const right = require('./images/right.png');
 export const left = require('./images/left.png');
 export const qr = require('./images/pockit_qr.jpg');
-
+export const logoWithoutText = require('./images/LogoWithoutText.png');
+export const PockitLogo2 = require('./images/PockitLogo2.png');
+export const PockitItengineerscolor = require('./images/logoText.png');
 
 import Profile from './svg/profile.svg';
 import dashboard from './svg/dashboard.svg';

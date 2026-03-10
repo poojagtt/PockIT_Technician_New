@@ -137,7 +137,7 @@ const Settings: React.FC<SettingsProps> = ({navigation}) => {
       <View style={[styles._card, {marginTop: Size.containerPadding}]}>
         <Text style={styles._sectionTitle}>Notifications</Text>
         <View style={styles._menuItem}>
-          <Text style={styles._txt}>PockIT Notification</Text>
+          <Text style={styles._txt}>Pockit Notification</Text>
           <TouchableOpacity
             onPress={toggleSwitch}
             style={[

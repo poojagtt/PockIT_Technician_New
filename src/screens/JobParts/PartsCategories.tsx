@@ -159,6 +159,7 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
 
       const INVENTORY_DATA = selectedPart.map((item: InventoryItem) => {
         return {
+          ID:item.ID,
           JOB_CARD_ID: jobItem.ID,
           INVENTORY_ID: item.IS_MANUAL ? 0 : item.INVENTORY_ID,
           INVENTORY_NAME: item.INVENTORY_NAME,
@@ -276,6 +277,7 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
       setLoading(true);
       const INVENTORY_DATA = selectedPart.map((item: InventoryItem) => {
         return {
+          ID:item.ID,
           JOB_CARD_ID: jobItem.ID,
           INVENTORY_ID: item.IS_MANUAL ? 0 : item.INVENTORY_ID,
           INVENTORY_NAME: item.INVENTORY_NAME,

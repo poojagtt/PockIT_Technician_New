@@ -165,7 +165,7 @@ const Section: React.FC<SectionProps> = ({title, contentParts}) => {
                            contentParts={[
                              {
                                type: 'paragraph',
-                               text: `These Terms and Conditions (“Terms”) constitute a legally binding agreement between the User (“User”, “you”, or “your”) and PockIT Engineers Private Limited, a company incorporated under the Companies Act, 2013, operating under the brand name ‘PockIT Engineers’ (“Company,” “we,” “our,” or “us”) governing the access to and use of our services through our website, mobile application (App), and any associated digital platforms (collectively, the “Platform”), including IT solutions, support, and hardware products (the “Services”).
+                               text: `These Terms and Conditions (“Terms”) constitute a legally binding agreement between the User (“User”, “you”, or “your”) and Pockit Engineers Private Limited, a company incorporated under the Companies Act, 2013, operating under the brand name ‘Pockit Engineers’ (“Company,” “we,” “our,” or “us”) governing the access to and use of our services through our website, mobile application (App), and any associated digital platforms (collectively, the “Platform”), including IT solutions, support, and hardware products (the “Services”).
                                By accessing, browsing, or using the Services, the User confirms having read, understood and accepted these Terms in their entirety. If the User does not agree to these Terms, the User is advised to refrain from accessing or utilizing the Services.`,
                              },
                            ]}
@@ -175,7 +175,7 @@ const Section: React.FC<SectionProps> = ({title, contentParts}) => {
                            contentParts={[
                              {
                                type: 'paragraph',
-                               text: `PockIT provides professional IT hardware diagnostic, repair, and maintenance services to individual and enterprise customers. These services are subject to the terms outlined herein and any specific agreements executed between PockIT Engineers and its customers. The Company is engaged in the business of providing IT solutions and services to its clients, including but not limited to managed services, hardware (new and refurbished) procurement, repair and maintenance, spares management, and deployment of refurbished IT equipment. This Policy applies to all personal information collected or processed by us who access or use our products and services, including but not limited to the comprehensive suite of IT support services. consultancy, and hardware sales, including through our websites/ Apps or other digital platforms, support applications, support portals, and other means of interaction and other related offerings Repair and maintenance of IT hardware, network configuration, deployment, support, installation, configuration, and troubleshooting of software applications, IT consultancy and advisory services, marketing and sale of IT hardware products including computers, peripherals, and accessories in India and the UAE.`,
+                               text: `Pockit provides professional IT hardware diagnostic, repair, and maintenance services to individual and enterprise customers. These services are subject to the terms outlined herein and any specific agreements executed between Pockit Engineers and its customers. The Company is engaged in the business of providing IT solutions and services to its clients, including but not limited to managed services, hardware (new and refurbished) procurement, repair and maintenance, spares management, and deployment of refurbished IT equipment. This Policy applies to all personal information collected or processed by us who access or use our products and services, including but not limited to the comprehensive suite of IT support services. consultancy, and hardware sales, including through our websites/ Apps or other digital platforms, support applications, support portals, and other means of interaction and other related offerings Repair and maintenance of IT hardware, network configuration, deployment, support, installation, configuration, and troubleshooting of software applications, IT consultancy and advisory services, marketing and sale of IT hardware products including computers, peripherals, and accessories in India and the UAE.`,
                              },
                            ]}
                          />
@@ -269,7 +269,7 @@ const Section: React.FC<SectionProps> = ({title, contentParts}) => {
                            contentParts={[
                              {
                                type: 'paragraph',
-                               text: 'All intellectual property, including but not limited to text, graphics, trademarks, logos, and software on the Company’s website and associated platforms/app, are the exclusive property of PockIT Engineers or its licensors. Any unauthorized use, reproduction, or distribution is strictly prohibited and may invite legal consequences.',
+                               text: 'All intellectual property, including but not limited to text, graphics, trademarks, logos, and software on the Company’s website and associated platforms/app, are the exclusive property of Pockit Engineers or its licensors. Any unauthorized use, reproduction, or distribution is strictly prohibited and may invite legal consequences.',
                              },
                            ]}
                          />
@@ -287,7 +287,7 @@ const Section: React.FC<SectionProps> = ({title, contentParts}) => {
                            contentParts={[
                              {
                                type: 'paragraph',
-                               text: `When using the PockIT Engineers mobile app, you may be required to grant permissions, including:`,
+                               text: `When using the Pockit Engineers mobile app, you may be required to grant permissions, including:`,
                              },
                              {
                                type: 'numbered',
@@ -383,7 +383,7 @@ const Section: React.FC<SectionProps> = ({title, contentParts}) => {
                                type: 'bulleted',
                                items: [
                                  'Email: itsupport@pockitengineers.com',
-                                 'Address: PockIT Engineers, Pune, India',
+                                 'Address: Pockit Engineers, Pune, India',
                                ],
                              },
                            ]}

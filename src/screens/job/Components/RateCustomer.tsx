@@ -38,6 +38,7 @@ const RateUs = ({jobDetails, onSuccess}: Props) => {
         'api/techniciancustomerfeedback/create',
         body,
       );
+      console.warn('res..', res.data);
       if (res.status == 200 && res.data.code == 200) {
         onSuccess();
       }
@@ -63,7 +64,7 @@ const RateUs = ({jobDetails, onSuccess}: Props) => {
             setRating({...rating, customer: e});
           }}
           starSize={35}
-          enableHalfStar={false}
+          step='full'
         />
       </View>
       <TextInput

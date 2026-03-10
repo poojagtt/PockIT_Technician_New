@@ -1248,7 +1248,7 @@ import Toast from '../../components/Toast';
                             ? 'Resume job'
                             : details.TRACK_STATUS == 'SJ'
                             ? 'Pause job'
-                            : 'Request to schedule'
+                            : 'Request to reschedule'
                         }
                         onPress={
                           details.TRACK_STATUS == 'PJ'

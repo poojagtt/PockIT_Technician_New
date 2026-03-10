@@ -190,6 +190,7 @@ const PartsSubCategories: React.FC<PartsSubCategories> = ({
       setLoading(true);
       const INVENTORY_DATA = selectedPart.map((item: InventoryItem) => {
         return {
+          ID:item.ID,
           JOB_CARD_ID: jobItem.ID,
           INVENTORY_ID: item.IS_MANUAL ? 0 : item.INVENTORY_ID,
           INVENTORY_NAME: item.INVENTORY_NAME,
@@ -262,6 +263,7 @@ const PartsSubCategories: React.FC<PartsSubCategories> = ({
 
       const INVENTORY_DATA = selectedPart.map((item: InventoryItem) => {
         return {
+          ID:item.ID,
           JOB_CARD_ID: jobItem.ID,
           INVENTORY_ID: item.IS_MANUAL ? 0 : item.INVENTORY_ID,
           INVENTORY_NAME: item.INVENTORY_NAME,

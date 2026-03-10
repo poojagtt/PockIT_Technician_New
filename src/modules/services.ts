@@ -2,6 +2,7 @@
 // export const BASE_URL: string = 'https://p8rhkmb7-8767.inc1.devtunnels.ms/'; //Bahubali
 // export const BASE_URL: string = 'https://1786vqrk-6787.inc1.devtunnels.ms/'; //Darshan
 // export const BASE_URL: string = 'https://pn5m5nf6-9090.inc1.devtunnels.ms/'; //Ujef
+// export const BASE_URL: string = 'https://98769p8r-9090.inc1.devtunnels.ms/'; //Ujef
 // export const BASE_URL: string = 'https://e9c6-2401-4900-1c9b-720e-7c61-c354-55fe-1c8b.ngrok-free.app/'; //Kedar Sir
 // export const BASE_URL: string = 'https://pockitadmin.uvtechsoft.com:8767/'; //Testing Server
 // export const BASE_URL: string = 'https://jsonplaceholder.typicode.com/'; //Live Server

@@ -199,7 +199,7 @@ const Menu: React.FC<MenuProps> = ({navigation}) => {
     {
       id: '5',
       icon: <Icon type="Feather" name="briefcase" size={26} />,
-      label: 'PockIT kit',
+      label: 'Pockit kit',
       route: 'PockItKit',
     },
     {

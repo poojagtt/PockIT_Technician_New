@@ -76,11 +76,11 @@ const PrivacyPolicy: React.FC<PrivacyPolicyModalProps> = ({
               contentParts={[{
                 type: 'paragraph',
                 textParts: [
-                  {text: 'PockIT Technologies Private Limited', bold: true},
+                  {text: 'Pockit Technologies Private Limited', bold: true},
                   {text: ', a company incorporated under the Companies Act, 2013 operating under the brand name, '},
-                  {text: 'PockIT Engineers', bold: true},
+                  {text: 'Pockit Engineers', bold: true},
                   {text: ' ('},
-                  {text: 'PockIT', bold: true},
+                  {text: 'Pockit', bold: true},
                   {text: ', '},
                   {text: 'Company', bold: true},
                   {text: ', "we", "our", or "us") values the privacy of its customers and is committed to maintaining the highest standards of data protection and transparency. This '},
@@ -354,7 +354,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyModalProps> = ({
                   ],
                   [
                     {text: 'Address', bold: true},
-                    {text: ': PockIT Engineers, Pune, Maharashtra, India'}
+                    {text: ': Pockit Engineers, Pune, Maharashtra, India'}
                   ]
                 ]
               }]} />

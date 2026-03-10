@@ -50,7 +50,7 @@ const PockItKit: React.FC<PockItKitProps> = ({navigation}) => {
         />
       </TouchableOpacity>
        {/* Heading */}
-      <Text style={styles._headingTxt}>PockIT Kit</Text>
+      <Text style={styles._headingTxt}>Pockit Kit</Text>
       <View
         style={{
           backgroundColor: colors.background,

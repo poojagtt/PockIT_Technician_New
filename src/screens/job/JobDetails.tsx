@@ -1078,19 +1078,19 @@ const JobDetails: React.FC<JobDetailsProps> = ({ navigation, route }) => {
           <Button
             label="Arrived"
             onPress={() => {
-              handleReached();
+              // handleReached();
 
-              // const isRemoteTech = user?.IS_REMOTE_TECHNICIAN ?? false;
+              const isRemoteTech = user?.IS_REMOTE_TECHNICIAN ?? false;
 
-              // if (isRemoteTech) {
-              //   handleReached();
-              // } else {
-              //   if (isWithinRange) {
-              //     handleReached();
-              //   } else {
-              //     Toast('You are not within 150 meters of the destination location');
-              //   }
-              // }
+              if (isRemoteTech) {
+                handleReached();
+              } else {
+                if (isWithinRange) {
+                  handleReached();
+                } else {
+                  Toast('You are not within 150 meters of the destination location');
+                }
+              }
 
             }}
             loading={loader.reached}

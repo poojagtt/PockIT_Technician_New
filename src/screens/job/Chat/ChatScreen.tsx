@@ -13,7 +13,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector} from '../../../context';
 import {
@@ -109,10 +109,36 @@ const ChatScreen: React.FC<ChatScreenProps> = ({navigation, route}) => {
     }, 300);
   }, [chatMessages]);
 
-  useEffect(() => {
-    subscribeToTopic();
+
+useEffect(() => {
+  getChatMessages();
+  subscribeToTopic();
+
+  // Foreground
+  const unsubscribeOnMessage = messaging().onMessage(async () => {
     getChatMessages();
-  }, []);
+  });
+
+  // Background click
+  const unsubscribeOnOpen = messaging().onNotificationOpenedApp(() => {
+    getChatMessages();
+  });
+
+  // Quit state
+  messaging()
+    .getInitialNotification()
+    .then(remoteMessage => {
+      if (remoteMessage) {
+        getChatMessages();
+      }
+    });
+
+  return () => {
+    unsubscribeOnMessage();
+    unsubscribeOnOpen();
+  };
+}, []);
+
   const subscribeToTopic = async () => {
     const topicName =
       'chat_' + jobItem.ID + '_technician_' + user?.ID + '_channel';
@@ -153,6 +179,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({navigation, route}) => {
       sortValue: 'ASC',
     });
     if (res.data && res.data.code === 200) {
+      console.log('Chat messages:', res.data.data);
       setChatMessages(res.data.data);
       setLoader(prev => ({...prev, chat: false}));
     }

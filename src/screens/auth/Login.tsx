@@ -15,7 +15,7 @@ import {
   NativeModules,
 } from 'react-native';
 import {fontFamily, GlobalStyle, Size, useTheme} from '../../modules/themes';
-import {AppLogo, left, right} from '../../assets';
+import {AppLogo, left, logoWithoutText, PockitItengineerscolor, right} from '../../assets';
 import {apiCall, isValidEmail, isValidMobile, useStorage} from '../../modules';
 import {Reducers, useDispatch} from '../../context';
 import {getCountryCode} from '../../Functions';
@@ -29,7 +29,6 @@ import CountryCodeSelector from '../../components/CountryCodeSelector';
 import TermsAndConditionsModal from './TermsAndConditionsModal';
 import PrivacyPolicy from './PrivacyPolicy';
 
-const PockitLogocolor = require('../../assets/images/PokitItengineerscolor.png');
 
 interface LoginProps {}
 interface inputInterface {
@@ -434,12 +433,12 @@ const Login: React.FC<LoginProps> = () => {
                 marginTop: keyboardVisible ? 20 : 60,
               }}>
               <Image
-                source={AppLogo}
+                source={logoWithoutText}
                 style={{width: 90, height: 90}}
                 resizeMode="contain"
               />
               <Image
-                source={PockitLogocolor}
+                source={PockitItengineerscolor}
                 style={{width: 138, height: 40}}
                 resizeMode="contain"
               />
@@ -453,7 +452,7 @@ const Login: React.FC<LoginProps> = () => {
                   color: colors.primary,
                   marginTop: 20,
                 }}>
-                Welcome to PockIT!
+                Welcome to Pockit!
               </Text>
               <Text
                 style={{
@@ -603,7 +602,7 @@ const Login: React.FC<LoginProps> = () => {
                         }}>
                         Privacy Policy{' '}
                       </Text>
-                      of PockIT Engineers
+                      of Pockit Engineers
                     </Text>
                   </View>
                   {mobile.termsErrorMessage && (

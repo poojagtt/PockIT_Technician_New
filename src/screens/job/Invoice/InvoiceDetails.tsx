@@ -387,7 +387,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                         fontWeight: '500',
                         fontFamily: fontFamily,
                       }}>
-                      PockIT
+                      Pockit
                     </Text>
                   </View>
                   <View>
@@ -1043,7 +1043,7 @@ const styles = StyleSheet.create({
 //         currency: 'INR',
 //         key: RAZOR_PAY_KEY, // public key only
 //         amount: amountPaise.toString(), // paise as string
-//         name: 'PockIT',
+//         name: 'Pockit',
 //         order_id: orderId, // IMPORTANT
 //         prefill: {
 //           name: item.CUSTOMER_NAME || '',
@@ -1229,7 +1229,7 @@ const styles = StyleSheet.create({
 //                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 //                   <View style={{gap: 6}}>
 //                     <Image source={require('../../../assets/images/PockitLogo1.png')} style={{width: 43, height: 43, borderRadius: 30, backgroundColor: '#333'}} resizeMode="cover" />
-//                     <Text style={{fontSize: 14, fontWeight: '500', fontFamily: fontFamily}}>PockIT</Text>
+//                     <Text style={{fontSize: 14, fontWeight: '500', fontFamily: fontFamily}}>Pockit</Text>
 //                   </View>
 //                   <View>
 //                     <Text style={{fontSize: 14, fontWeight: '500', textAlign: 'right', fontFamily: fontFamily}}>Date : {new Date(item.JOB_COMPLETED_DATETIME || new Date()).toDateString()}</Text>
