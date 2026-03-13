@@ -52,6 +52,7 @@ if linkage != nil
 end
 
 target 'PockIT' do
+  $RNMapsUseGoogleMaps = true
   config = use_native_modules!
 
   pod 'Firebase', :modular_headers => true
@@ -71,8 +72,10 @@ target 'PockIT' do
   # pod 'react-native-google-maps', :path => rn_maps_path
 
   rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
-# pod 'GoogleMaps'
+ # pod 'react-native-google-maps', :path => rn_maps_path
+pod 'GoogleMaps'
+ pod 'Firebase/Messaging'
+  pod 'razorpay-pod'
 # pod 'Google-Maps-iOS-Utils'
   use_react_native!(
       :fabric_enabled => false,
@@ -89,5 +92,18 @@ target 'PockIT' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # Fix Xcode build errors caused by "non-modular include in framework module" warnings treated as errors.
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+      end
+
+      if target.name == 'razorpay-pod'
+        target.build_configurations.each do |config|
+          config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf-with-dsym'
+        end
+      end
+    end
   end
 end

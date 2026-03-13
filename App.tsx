@@ -50,16 +50,16 @@ const AppContent: React.FC = () => {
       style={{
         flex: 1,
         paddingBottom: insets.bottom,
-        // backgroundColor: color.primary2, // Or 'red' if you're debugging
+        backgroundColor: Platform.OS == 'android' ? color.primary2 : '#FFF',
       }}
       edges={['top']}
     >
       {/* Optional: StatusBar styling */}
-      <StatusBar
+      {/* <StatusBar
        translucent={false} 
         barStyle={Platform.OS === 'ios' ? 'dark-content' : 'dark-content'}
         backgroundColor={color.primary2}
-      />
+      /> */}
       {/* <SplashScreen /> */}
       {splash ? <SplashScreen /> : user ? <Routes /> : <Login />}
     </SafeAreaView>
