@@ -222,7 +222,7 @@ import Toast from '../../components/Toast';
                 };
                 await useStorage.set('JobTimer', JSON.stringify(pausedTimer));
               } else {
-                await useStorage.delete('JobTimer');
+                await useStorage.remove('JobTimer');
               }
               setIsTimer(false);
             }
@@ -1050,6 +1050,9 @@ import Toast from '../../components/Toast';
                     {expandCard.showMap && !region.loading && (
                       <View>
                         <MapView
+                         showsCompass={true}
+showsMyLocationButton={true}
+                      mapToolbarEnabled={true}
                           ref={mapRef}
                           provider={PROVIDER_GOOGLE}
                           style={{

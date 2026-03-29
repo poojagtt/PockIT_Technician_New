@@ -7,9 +7,9 @@
 // export const BASE_URL: string = 'https://pockitadmin.uvtechsoft.com:8767/'; //Testing Server
 // export const BASE_URL: string = 'https://jsonplaceholder.typicode.com/'; //Live Server
 // export const SOCKET_URL: string = 'https://pockit.pockitengineers.com/'; //Live Server
-export const BASE_URL: string = 'https://pockit.pockitengineers.com/auth/'; //Live Server
-// export const BASE_URL: string = 'http://45.114.141.160:7848/auth/'; //Live Server
-// export const BASE_URL: string = 'https://console.pockitengineers.com/authdev/'; //Live Server production
+// export const BASE_URL: string = 'https://pockit.pockitengineers.com/auth/'; //Live Server
+// export const BASE_URL: string = 'http://45.114.141.160:7850/auth/'; //Live Server
+export const BASE_URL: string = 'https://console.pockitengineers.com/auth/'; //Live Server production
 
 
 // Your API keys

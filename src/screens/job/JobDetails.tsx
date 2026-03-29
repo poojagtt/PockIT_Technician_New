@@ -901,6 +901,9 @@ const JobDetails: React.FC<JobDetailsProps> = ({ navigation, route }) => {
                   !region.loading && (
                     <View>
                       <MapView
+                      showsCompass={true}
+showsMyLocationButton={true}
+                      mapToolbarEnabled={true}
                         key={`${region.latitude},${region.longitude}`}
                         ref={mapRef}
                         provider={PROVIDER_GOOGLE}

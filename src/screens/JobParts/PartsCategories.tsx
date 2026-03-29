@@ -26,6 +26,7 @@ import {JobRoutes} from '../../routes/Job';
 import {resetAndNavigate} from '../../utils';
 import Toast from '../../components/Toast';
 import CheckBox from '@react-native-community/checkbox';
+import AddPartsModal from './Addpartsmodal';
 
 interface Category {
   CATEGORY_NAME: string;
@@ -157,9 +158,14 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
         .map((item: any) => item.EMAIL_ID)
         .join(',');
 
+
       const INVENTORY_DATA = selectedPart.map((item: InventoryItem) => {
+        console.log('emailString', item.ID);
+       
         return {
-          ID:item.ID,
+         ID:item.IS_MANUAL ? 0 : item.ID,
+          IS_STATIC:item.IS_MANUAL ? 1 : 0,
+          STATIC_INVENTORY_ID: item.IS_MANUAL ? item.ID : null,
           JOB_CARD_ID: jobItem.ID,
           INVENTORY_ID: item.IS_MANUAL ? 0 : item.INVENTORY_ID,
           INVENTORY_NAME: item.INVENTORY_NAME,
@@ -185,9 +191,11 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
           CUSTOMER_TYPE: jobItem.CUSTOMER_TYPE,
         };
       });
+      console.log('INVENTORY_DATA', INVENTORY_DATA);
       const body = {
         CUSTOMER_NAME: jobItem.CUSTOMER_NAME,
         EMAIL_LIST: emailString,
+           ORDER_ID:jobItem.ORDER_ID,
         JOB_CARD_ID: jobItem.ID,
         JOB_CARD_NO: jobItem.JOB_CARD_NO,
         TECHNICIAN_ID: user?.ID,
@@ -241,6 +249,7 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
                 a.CATEGORY_NAME.localeCompare(b.CATEGORY_NAME),
             );
             setListLoading(false);
+            console.log('sortedCategories', res.data.data);
             setCategories(sortedCategories);
           }
           setListLoading(false);
@@ -277,7 +286,10 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
       setLoading(true);
       const INVENTORY_DATA = selectedPart.map((item: InventoryItem) => {
         return {
-          ID:item.ID,
+          ID:item.IS_MANUAL ? 0 : item.ID,
+          IS_STATIC:item.IS_MANUAL ? 1 : 0,
+         
+          STATIC_INVENTORY_ID: item.IS_MANUAL ? item.ID : null,
           JOB_CARD_ID: jobItem.ID,
           INVENTORY_ID: item.IS_MANUAL ? 0 : item.INVENTORY_ID,
           INVENTORY_NAME: item.INVENTORY_NAME,
@@ -304,6 +316,7 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
         };
       });
       const body = {
+           ORDER_ID:jobItem.ORDER_ID,
         JOB_CARD_ID: jobItem.ID,
         JOB_CARD_NO: jobItem.JOB_CARD_NO,
         TECHNICIAN_ID: user?.ID,
@@ -316,6 +329,7 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
         CLIENT_ID: 1,
         INVENTORY_DATA,
       };
+      console.log('\n\n\naddInventory body', body);
       apiCall.post(`api/inventoryRequest/addInventory`, body).then(res => {
         console.log('\n\naddInventory res....', res);
         if (res.status === 200 && res.data.code === 200) {
@@ -800,7 +814,7 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
       />
 
       {/* Add Parts Modal */}
-      <Modal
+      {/* <Modal
         visible={showAddPartsModal}
         transparent
         animationType="slide"
@@ -886,7 +900,57 @@ const PartsCategories: React.FC<PendingJobListProps> = ({
             </View>
           </View>
         </KeyboardAvoidingView>
-      </Modal>
+      </Modal> */}
+
+     
+<AddPartsModal
+  visible={showAddPartsModal}
+  onClose={() => setShowAddPartsModal(false)}
+  onConfirm={(parts) => {
+    parts.forEach((part) => {
+      const inventoryItem = {
+        ID: part.ID,
+        INVENTORY_ID: part.ID,
+        INVENTORY_NAME: part.ITEM_NAME,
+        SELLING_PRICE: parseFloat(part.SELLING_PRICE),
+        ARCHIVE_FLAG: 0,
+        BATCH_NO: '',
+        CLIENT_ID: 1,
+        CREATED_MODIFIED_DATE: moment().format('YYYY-MM-DD HH:mm:ss'),
+        DESCRIPTION: '',
+        EXPIRY_DATE: null,
+        GST_RATE: 0,
+        HSN_CODE: '',
+        INVENTORY_CODE: String(part.ID),
+        INVENTORY_TYPE: 'S',
+        IS_ACTIVE: 1,
+        IS_MANUAL: true,       // these are real inventory items, not manual
+        MINIMUM_STOCK: 0,
+        OPENING_STOCK: 0,
+        PURCHASE_PRICE: parseFloat(part.SELLING_PRICE),
+        REMARK: '',
+        STATUS: 1,
+        STOCK: 0,
+        TAX_RATE: 0,
+        UOM: '',
+        WAREHOUSE_ID: 1,
+        DATE: moment().format('YYYY-MM-DD HH:mm:ss'),
+        INVENTORY_CAT_ID: 0,
+        INVENTORY_CAT_NAME: '',
+        UNIT_ID: 0,
+        UNIT_NAME: '',
+        INVENTORY_TRACKING_TYPE: 'S',
+        IS_VARIENT: false,
+        PARENT_ID: 0,
+        QUANTITY_PER_UNIT: 0,
+        SERIAL_NO: '',
+      };
+      dispatch(Reducers.toggleSelectedItem(inventoryItem));
+    });
+    setShowAddPartsModal(false);
+  }}
+  addLoading={addLoading}
+/>
 
       {/* Email modal */}
 

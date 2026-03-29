@@ -169,7 +169,9 @@ useEffect(() => {
       getChatMessages();
     });
   };
+  console.log('job item in chat screen', jobItem);
   const getChatMessages = async () => {
+    console.log('Fetching chat messages for JOB_CARD_ID:', jobItem.ID, 'ORDER_ID:', jobItem.ORDER_ID);
     const res = await apiCall.post('api/orderChat/get', {
       filter: {
         JOB_CARD_ID: jobItem.ID,
@@ -530,7 +532,7 @@ useEffect(() => {
             }}>
             <Text
               style={[styles.headerTxt, {flex: 1, color: colors.primaryText}]}>
-              {jobItem.SERVICE_NAME}
+              {jobItem?.SERVICE_NAME? jobItem.SERVICE_NAME : "Chat"}
             </Text>
             <TouchableOpacity
               activeOpacity={0.7}

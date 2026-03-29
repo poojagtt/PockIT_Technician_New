@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import {Button, Icon, TextInput} from '../../../components';
+import { Button, Icon, TextInput } from '../../../components';
 import {
   apiCall,
   fontFamily,
@@ -23,13 +23,13 @@ import {
   Size,
   useTheme,
 } from '../../../modules';
-import {useSelector} from '../../../context';
+import { useSelector } from '../../../context';
 import moment from 'moment';
 import Modal from '../../../components/Modal';
-import {_noData} from '../../../assets';
+import { _noData } from '../../../assets';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'react-native-blob-util';
-import {Modal as RNModal} from 'react-native';
+import { Modal as RNModal } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface NotificationItem {
@@ -64,7 +64,7 @@ interface NotificationItem {
   VENDOR_ID: number | null;
 }
 
-const Notification: React.FC<{navigation: any}> = ({navigation}) => {
+const Notification: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [loadingDownload, setLoadingDownload] = useState(false);
@@ -78,9 +78,9 @@ const Notification: React.FC<{navigation: any}> = ({navigation}) => {
   const [pageIndex, setPageIndex] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-console.log("here")
+  console.log("here")
   const [toDate, setToDate] = useState(new Date());
-  const {user} = useSelector(state => state.app);
+  const { user } = useSelector(state => state.app);
   const [loading, setLoading] = useState<boolean>(true);
   const [openFilterModal, setFilterModal] = useState<boolean>(false);
   const [expandedNotifications, setExpandedNotifications] = useState<{
@@ -123,7 +123,7 @@ console.log("here")
         pageSize: 10,
       });
       if (response.data?.data) {
-        console.log("notifications",response.data.data)
+        console.log("notifications", response.data.data)
         const newData = response.data.data;
         if (isLoadMore) {
           if (newData.length === 0) {
@@ -154,6 +154,32 @@ console.log("here")
     setHasMore(true);
     getNotification('');
   }, [activeTab]);
+
+  const getInventoryRequestDetails = async (item: any) => {
+    // setLoader(true);
+    try {
+      // setOrderDetails(prev => ({ ...prev, loading: true }));
+      const res = await apiCall.post(`api/jobcard/get`, {
+        TECHNICIAN_ID: user?.ID,
+        ORDER_ID: item.ORDER_ID,
+      });
+      if (res.data.code === 200) {
+        console.log('Order details fetched successfully', res.data.data);
+
+       if(item.MEDIA_TYPE == "OC"){
+         navigation.navigate('Job', {screen: 'ChatScreen', params: {jobItem: res.data.data[0]}});
+       }
+
+      } else {
+        throw new Error('Failed to fetch order details');
+      }
+    } catch (error) {
+      console.warn('Error fetching order details:', error);
+
+    } finally {
+      // setLoader(false);
+    }
+  };
 
   const categorizeNotifications = () => {
     const today = moment().startOf('day');
@@ -192,15 +218,15 @@ console.log("here")
 
   const finalList = [];
   if (categorizedNotifications.Today.length > 0) {
-    finalList.push({type: 'header', title: 'Today'});
+    finalList.push({ type: 'header', title: 'Today' });
     finalList.push(...categorizedNotifications.Today);
   }
   if (categorizedNotifications['This week'].length > 0) {
-    finalList.push({type: 'header', title: 'This week'});
+    finalList.push({ type: 'header', title: 'This week' });
     finalList.push(...categorizedNotifications['This week']);
   }
   if (categorizedNotifications.Older.length > 0) {
-    finalList.push({type: 'header', title: 'Older'});
+    finalList.push({ type: 'header', title: 'Older' });
     finalList.push(...categorizedNotifications.Older);
   }
 
@@ -212,7 +238,7 @@ console.log("here")
     downloadFile(fileUrl, fileName);
   };
 
-const downloadFile = async (fileUrl: string, fileName: string) => {
+  const downloadFile = async (fileUrl: string, fileName: string) => {
     try {
       setLoadingDownload(true);
       if (Platform.OS === 'android') {
@@ -231,14 +257,14 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
       } else {
         // iOS: save inside app sandbox (Documents). To expose to user you can share the file or save to Photos.
         const dest = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-        const options = {fromUrl: fileUrl, toFile: dest};
+        const options = { fromUrl: fileUrl, toFile: dest };
         const result = await RNFS.downloadFile(options).promise;
         if (result.statusCode === 200) {
           Alert.alert('Download Complete', `File saved to ${dest}`);
           // Optional: show share sheet so user can save/export the file
           // import Share from 'react-native-share' and uncomment below:
           // await Share.open({ url: 'file://' + dest, failOnCancel: false });
- 
+
           // Optional: to save images to Photos, use react-native-cameraroll:
           // import CameraRoll from '@react-native-community/cameraroll';
           // await CameraRoll.save(dest, { type: 'photo' });
@@ -263,7 +289,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
 
   return (
     <SafeAreaView
-      style={[styles.container, {backgroundColor: colors.background}]}>
+      style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
 
       <View
@@ -287,16 +313,16 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
             justifyContent: 'space-between',
           }}>
           <Text
-            style={[styles.headerText, {flex: 1, color: colors.primaryText}]}>
+            style={[styles.headerText, { flex: 1, color: colors.primaryText }]}>
             Notification
           </Text>
         </View>
       </View>
 
-      <View style={{backgroundColor: colors.white}}>
+      <View style={{ backgroundColor: colors.white }}>
         <TextInput
           leftChild={<Icon size={30} name="search" type="EvilIcons" />}
-          style={{marginHorizontal: 12, marginTop: 12}}
+          style={{ marginHorizontal: 12, marginTop: 12 }}
           placeholder="Search..."
           value={searchValue}
           onChangeText={value => {
@@ -314,7 +340,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
                 marginRight: -8,
               }}>
               <Icon
-                style={{padding: 6}}
+                style={{ padding: 6 }}
                 size={30}
                 name="filter"
                 type="AntDesign"
@@ -335,7 +361,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
           <Text
             style={[
               styles.tabText,
-              {color: activeTab == 0 ? colors.primary : colors.text},
+              { color: activeTab == 0 ? colors.primary : colors.text },
             ]}>
             All
           </Text>
@@ -350,7 +376,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
           <Text
             style={[
               styles.tabText,
-              {color: activeTab == 1 ? colors.primary : colors.text},
+              { color: activeTab == 1 ? colors.primary : colors.text },
             ]}>
             Jobs
           </Text>
@@ -365,7 +391,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
           <Text
             style={[
               styles.tabText,
-              {color: activeTab == 2 ? colors.primary : colors.text},
+              { color: activeTab == 2 ? colors.primary : colors.text },
             ]}>
             Other
           </Text>
@@ -377,7 +403,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
         </View>
       ) : (
         <FlatList
-          style={{paddingHorizontal: Size.containerPadding}}
+          style={{ paddingHorizontal: Size.containerPadding }}
           refreshControl={
             <RefreshControl
               refreshing={loading}
@@ -392,14 +418,14 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
               }}>
               <Image
                 source={_noData}
-                style={{height: 150, width: 150, marginTop: 100}}
+                style={{ height: 150, width: 150, marginTop: 100 }}
               />
             </View>
           }
           ListFooterComponent={() => {
             if (isLoadingMore) {
               return (
-                <View style={{paddingVertical: 20, alignItems: 'center'}}>
+                <View style={{ paddingVertical: 20, alignItems: 'center' }}>
                   <ActivityIndicator size="small" color={colors.primary2} />
                 </View>
               );
@@ -414,7 +440,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
               ? `header-${item.title}-${index}`
               : `notification-${item.ID}-${index}`
           }
-          renderItem={({item}: {item: any}) => {
+          renderItem={({ item }: { item: any }) => {
             if (item.type === 'header') {
               return <Text style={styles.sectionTitle}>{item.title}</Text>;
             }
@@ -422,9 +448,13 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
               ? item.ATTACHMENT.split('.').pop().toLowerCase()
               : '';
             return (
-              <View style={styles.notificationItem}>
+              <TouchableOpacity onPress={() => {
+                // if(item.MEDIA_TYPE == "OC"){
+                //   getInventoryRequestDetails(item)
+                // }
+                 }} style={styles.notificationItem}>
                 <View style={styles.titleContainer}>
-                  <Text style={[styles.notificationTitle, {flexShrink: 1}]}>
+                  <Text style={[styles.notificationTitle, { flexShrink: 1 }]}>
                     {item.TITLE.replace(/\*/g, '')}
                   </Text>
                   <Text style={styles.notificationTime}>
@@ -432,8 +462,8 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
                   </Text>
                 </View>
                 <View>
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={{flex: 1}}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flex: 1 }}>
                       <Text
                         style={styles.notificationDescription}
                         numberOfLines={
@@ -484,7 +514,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
                       />
                     )}
                 </View>
-              </View>
+              </TouchableOpacity>
             );
           }}
           onEndReached={() => {
@@ -516,9 +546,9 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
             justifyContent: 'space-between',
             marginTop: 20,
           }}>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Text
-              style={[GlobalStyle.fieldLabel, {color: colors.text}]}
+              style={[GlobalStyle.fieldLabel, { color: colors.text }]}
               numberOfLines={1}
               adjustsFontSizeToFit>
               From Date
@@ -535,7 +565,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
                 },
               ]}
               onPress={() =>
-                setShowDatePicker({...showDatePicker, showfromDate: true})
+                setShowDatePicker({ ...showDatePicker, showfromDate: true })
               }>
               <Text
                 style={{
@@ -549,10 +579,10 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
               <Icon name="calendar" type="AntDesign" color={colors.primary} />
             </TouchableOpacity>
           </View>
-          <View style={{width: 10}}></View>
-          <View style={{flex: 1}}>
+          <View style={{ width: 10 }}></View>
+          <View style={{ flex: 1 }}>
             <Text
-              style={[GlobalStyle.fieldLabel, {color: colors.text}]}
+              style={[GlobalStyle.fieldLabel, { color: colors.text }]}
               numberOfLines={1}
               adjustsFontSizeToFit>
               To Date
@@ -569,7 +599,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
                 },
               ]}
               onPress={() =>
-                setShowDatePicker({...showDatePicker, showToDate: true})
+                setShowDatePicker({ ...showDatePicker, showToDate: true })
               }>
               <Text
                 style={{
@@ -613,111 +643,111 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
             }}
             maximumDate={new Date()}
           /> */}
-         {showDatePicker.showfromDate && (
-  Platform.OS === 'ios' ? (
-    <RNModal
-      transparent
-      animationType="fade"
-      visible={showDatePicker.showfromDate}
-      onRequestClose={() => setShowDatePicker({...showDatePicker, showfromDate: false})}
-    >
-      <View style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)'
-      }}>
-        <View style={{
-          backgroundColor: '#fff',
-          borderRadius: 10,
-          padding: 16,
-          width: '90%',
-          alignItems: 'center'
-        }}>
-          <DateTimePicker
-            value={fromDate || new Date()}
-            mode="date"
-            display="spinner"
-            maximumDate={new Date()}
-            onChange={(event, selectedDate) => {
-              if (event.type === 'set' && selectedDate) setFromDate(selectedDate);
-            }}
-          />
-          <Button
-            label="Done"
-            style={{marginTop: 10, width: 100}}
-            onPress={() => setShowDatePicker({...showDatePicker, showfromDate: false})}
-          />
-        </View>
-      </View>
-    </RNModal>
-  ) : (
-    <DateTimePicker
-      value={fromDate || new Date()}
-      mode="date"
-      display="default"
-      maximumDate={new Date()}
-      onChange={(event, selectedDate) => {
-        setShowDatePicker({...showDatePicker, showfromDate: false});
-        if (event.type === 'set' && selectedDate) setFromDate(selectedDate);
-      }}
-    />
-  )
-)}
+          {showDatePicker.showfromDate && (
+            Platform.OS === 'ios' ? (
+              <RNModal
+                transparent
+                animationType="fade"
+                visible={showDatePicker.showfromDate}
+                onRequestClose={() => setShowDatePicker({ ...showDatePicker, showfromDate: false })}
+              >
+                <View style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.3)'
+                }}>
+                  <View style={{
+                    backgroundColor: '#fff',
+                    borderRadius: 10,
+                    padding: 16,
+                    width: '90%',
+                    alignItems: 'center'
+                  }}>
+                    <DateTimePicker
+                      value={fromDate || new Date()}
+                      mode="date"
+                      display="spinner"
+                      maximumDate={new Date()}
+                      onChange={(event, selectedDate) => {
+                        if (event.type === 'set' && selectedDate) setFromDate(selectedDate);
+                      }}
+                    />
+                    <Button
+                      label="Done"
+                      style={{ marginTop: 10, width: 100 }}
+                      onPress={() => setShowDatePicker({ ...showDatePicker, showfromDate: false })}
+                    />
+                  </View>
+                </View>
+              </RNModal>
+            ) : (
+              <DateTimePicker
+                value={fromDate || new Date()}
+                mode="date"
+                display="default"
+                maximumDate={new Date()}
+                onChange={(event, selectedDate) => {
+                  setShowDatePicker({ ...showDatePicker, showfromDate: false });
+                  if (event.type === 'set' && selectedDate) setFromDate(selectedDate);
+                }}
+              />
+            )
+          )}
 
-{showDatePicker.showToDate && (
-  Platform.OS === 'ios' ? (
-    <RNModal
-      transparent
-      animationType="fade"
-      visible={showDatePicker.showToDate}
-      onRequestClose={() => setShowDatePicker({...showDatePicker, showToDate: false})}
-    >
-      <View style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)'
-      }}>
-        <View style={{
-          backgroundColor: '#fff',
-          borderRadius: 10,
-          padding: 16,
-          width: '90%',
-          alignItems: 'center'
-        }}>
-          <DateTimePicker
-            value={toDate || new Date()}
-            mode="date"
-            minimumDate={fromDate}
-            display="spinner"
-            maximumDate={new Date()}
-            onChange={(event, selectedDate) => {
-              if (event.type === 'set' && selectedDate) setToDate(selectedDate);
-            }}
-          />
-          <Button
-            label="Done"
-            style={{marginTop: 10, width: 100}}
-            onPress={() => setShowDatePicker({...showDatePicker, showToDate: false})}
-          />
-        </View>
-      </View>
-    </RNModal>
-  ) : (
-    <DateTimePicker
-      value={toDate || new Date()}
-      mode="date"
-      minimumDate={fromDate}
-      display="default"
-      maximumDate={new Date()}
-      onChange={(event, selectedDate) => {
-        setShowDatePicker({...showDatePicker, showToDate: false});
-        if (event.type === 'set' && selectedDate) setToDate(selectedDate);
-      }}
-    />
-  )
-)}
+          {showDatePicker.showToDate && (
+            Platform.OS === 'ios' ? (
+              <RNModal
+                transparent
+                animationType="fade"
+                visible={showDatePicker.showToDate}
+                onRequestClose={() => setShowDatePicker({ ...showDatePicker, showToDate: false })}
+              >
+                <View style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.3)'
+                }}>
+                  <View style={{
+                    backgroundColor: '#fff',
+                    borderRadius: 10,
+                    padding: 16,
+                    width: '90%',
+                    alignItems: 'center'
+                  }}>
+                    <DateTimePicker
+                      value={toDate || new Date()}
+                      mode="date"
+                      minimumDate={fromDate}
+                      display="spinner"
+                      maximumDate={new Date()}
+                      onChange={(event, selectedDate) => {
+                        if (event.type === 'set' && selectedDate) setToDate(selectedDate);
+                      }}
+                    />
+                    <Button
+                      label="Done"
+                      style={{ marginTop: 10, width: 100 }}
+                      onPress={() => setShowDatePicker({ ...showDatePicker, showToDate: false })}
+                    />
+                  </View>
+                </View>
+              </RNModal>
+            ) : (
+              <DateTimePicker
+                value={toDate || new Date()}
+                mode="date"
+                minimumDate={fromDate}
+                display="default"
+                maximumDate={new Date()}
+                onChange={(event, selectedDate) => {
+                  setShowDatePicker({ ...showDatePicker, showToDate: false });
+                  if (event.type === 'set' && selectedDate) setToDate(selectedDate);
+                }}
+              />
+            )
+          )}
         </View>
 
         <View
@@ -727,7 +757,7 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
             justifyContent: 'space-between',
           }}>
           <Button
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             label="Apply"
             onPress={() => {
               setPageIndex(1);
@@ -735,9 +765,9 @@ const downloadFile = async (fileUrl: string, fileName: string) => {
               setFilterModal(false);
             }}
           />
-          <View style={{width: 10}} />
+          <View style={{ width: 10 }} />
           <Button
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             label="Clear"
             onPress={() => {
               setPageIndex(1);

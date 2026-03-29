@@ -174,6 +174,7 @@ const PartsInventory: React.FC<partsInventory> = ({navigation, route}) => {
       const body = {
         CUSTOMER_NAME: jobItem.CUSTOMER_NAME,
         EMAIL_LIST: emailString,
+          ORDER_ID:jobItem.ORDER_ID,
         JOB_CARD_ID: jobItem.ID,
         JOB_CARD_NO: jobItem.JOB_CARD_NO,
         TECHNICIAN_ID: user?.ID,
@@ -291,6 +292,7 @@ const PartsInventory: React.FC<partsInventory> = ({navigation, route}) => {
         };
       });
       const body = {
+            ORDER_ID:jobItem.ORDER_ID,
         JOB_CARD_ID: jobItem.ID,
         JOB_CARD_NO: jobItem.JOB_CARD_NO,
         TECHNICIAN_ID: user?.ID,

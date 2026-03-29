@@ -10,7 +10,7 @@ import {
   BackHandler,
   Linking,
 } from 'react-native';
-import React, {useEffect, useRef, useState, useCallback} from 'react';
+import React, {useEffect, useRef, useState, useCallback, use} from 'react';
 import {JobRoutes} from '../../routes/Job';
 import {
   IMAGE_URL,
@@ -44,6 +44,8 @@ import {useSelector} from '../../context';
 import Toast from '../../components/Toast';
 import messaging from '@react-native-firebase/messaging';
 import { JobStopBgService } from '../../utils/JobBackgroundLocation';
+import { useFocusEffect } from '@react-navigation/native';
+import { get } from '@react-native-firebase/database';
 
 interface JobFlowProps extends JobRoutes<'JobFlow'> {}
 const JobFlow: React.FC<JobFlowProps> = ({navigation, route}) => {
@@ -517,6 +519,7 @@ const JobFlow: React.FC<JobFlowProps> = ({navigation, route}) => {
   const openJobClose = useCallback(() => {
     setJobCloseModal(true);
   }, []);
+
   const getPartList = useCallback(() => {
     try {
       apiCall
@@ -666,10 +669,16 @@ const JobFlow: React.FC<JobFlowProps> = ({navigation, route}) => {
     initializeTimer();
   }, []);
 
+useFocusEffect(
+  useCallback(() => {
+    getPartList();
+  }, [])
+);
+
    useEffect(() => {
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         const { data1, data2, data3, data4, data5 }: any = remoteMessage.data;
-  
+          getPartList();
         const parsedData4 = JSON.parse(data4);
         const jobCardNo = parsedData4[0].JOB_CARD_NO;
   
@@ -822,7 +831,7 @@ const JobFlow: React.FC<JobFlowProps> = ({navigation, route}) => {
           </View>
         </View>
         <View style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} >
             <View style={{gap: 6}}>
               {/* Details card */}
               <AnimatedCard
@@ -1408,6 +1417,9 @@ const JobFlow: React.FC<JobFlowProps> = ({navigation, route}) => {
                     {expandCard.showMap && (
                       <View>
                         <MapView
+                         showsCompass={true}
+showsMyLocationButton={true}
+                      mapToolbarEnabled={true}
                           ref={mapRef}
                           provider={PROVIDER_GOOGLE}
                           style={{
