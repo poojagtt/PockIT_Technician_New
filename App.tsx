@@ -50,7 +50,7 @@ const AppContent: React.FC = () => {
       style={{
         flex: 1,
         paddingBottom: insets.bottom,
-        // backgroundColor: color.primary2, // Or 'red' if you're debugging
+        backgroundColor: color.white, // Or 'red' if you're debugging
       }}
       edges={['top']}
     >

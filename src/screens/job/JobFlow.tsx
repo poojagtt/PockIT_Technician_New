@@ -1419,7 +1419,7 @@ useFocusEffect(
                         <MapView
                          showsCompass={true}
 showsMyLocationButton={true}
-                      mapToolbarEnabled={true}
+                     
                           ref={mapRef}
                           provider={PROVIDER_GOOGLE}
                           style={{

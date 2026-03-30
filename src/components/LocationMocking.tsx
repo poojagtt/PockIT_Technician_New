@@ -193,7 +193,7 @@ const LocationMocking = ({jobItem}: props) => {
       <MapView
        showsCompass={true}
 showsMyLocationButton={true}
-                      mapToolbarEnabled={true}
+                   
         ref={mapRef}
         style={{height: '100%', width: '100%', borderRadius: Size.radius}}
         initialRegion={{

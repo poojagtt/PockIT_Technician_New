@@ -903,7 +903,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({ navigation, route }) => {
                       <MapView
                       showsCompass={true}
 showsMyLocationButton={true}
-                      mapToolbarEnabled={true}
+                     
                         key={`${region.latitude},${region.longitude}`}
                         ref={mapRef}
                         provider={PROVIDER_GOOGLE}
