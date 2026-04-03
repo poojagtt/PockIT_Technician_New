@@ -42,6 +42,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
   const [QRloader, setQRLoader] = useState(false);
   const [dataSource, setDataSource] = useState({ uri: '' });
   const [intervalId, setIntervalId] = useState(null);
+  const [totalPending,setTotalPending] = useState(0);
 
 
   const [totalAmount, setTotalAmount] = useState(
@@ -50,6 +51,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
   console.log("\n\n\ndata", item)
   useEffect(() => {
     if (item.TOTAL_AMOUNT && partList.length > 0) {
+      const item_amount = (item.PAYMENT_MODE === 'ONLINE' || item.PAYMENT_MODE === 'Wal') ?0 :  parseFloat(String(item.TOTAL_AMOUNT));
       const filteredPartList = partList.filter(
         data => data.STATUS === 'AC' && data.IS_RETURNED == 0,
       );
@@ -70,6 +72,10 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
         EXPRESS_DELIVERY_CHARGES -
         COUPON_AMOUNT,
       );
+      setTotalPending( sum +
+        item_amount +
+        EXPRESS_DELIVERY_CHARGES -
+        COUPON_AMOUNT,)
     }
   }, []);
   const [otp, setOtp] = useState({
@@ -261,11 +267,16 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
         TECHNICIAN_ID: user?.ID,
         TECHNICIAN_NAME: user?.NAME,
       };
+      console.log("payment received payload", payload)
       const response = await apiCall.post(
         'api/jobCard/updatePaymentStatus',
         payload,
       );
-      if (response.status == 200) {
+      console.log("\n.\n\npayment received response", response)
+
+      if (response.data.code == 200) {
+      // console.log("\n\n\npayment received response", response)
+
         setLoader({
           ...loader,
           paymentReceived: false,
@@ -273,7 +284,14 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
         sendOtp();
 
         Toast('Payment Received');
-      } else {
+      } else if (response.data.code == 400) {
+        setLoader({
+          ...loader,
+          paymentReceived: false,
+        });
+        Toast("Payment is still pending from the customer side. Kindly confirm from your end.");
+      }
+      else {
         Alert.alert('Failed to Payment Received');
       }
     } catch (error) {
@@ -436,7 +454,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      paddingTop: 12,
+                      paddingTop: 8,
                     }}>
                     <Text
                       style={{
@@ -463,7 +481,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      paddingVertical: 12,
+                      // paddingVertical: 12,
                     }}>
                     <Text
                       style={{
@@ -490,7 +508,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      paddingVertical: 12,
+                      // paddingVertical: 12,
                     }}>
                     <Text
                       style={{
@@ -517,7 +535,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      paddingVertical: 12,
+                      // paddingVertical: 12,
                     }}>
                     <Text
                       style={{
@@ -555,7 +573,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                                   gap: 12,
                                   flexDirection: 'row',
                                   justifyContent: 'space-between',
-                                  paddingTop: 12,
+                                  // paddingTop: 12,
                                 }}>
                                 {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
                                   <Text
@@ -596,7 +614,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                                   gap: 12,
                                   flexDirection: 'row',
                                   justifyContent: 'space-between',
-                                  paddingTop: 12,
+                                  // paddingTop: 12,
                                 }}>
                                 {item.IS_RETURNED == 0 && item.STATUS == 'AC' && (
                                   <Text
@@ -646,7 +664,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      paddingTop: 14,
+                      paddingTop: 12,
                     }}>
                     <Text
                       style={{
@@ -664,6 +682,33 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                       }}>
                       {`₹ ${parseFloat(
                         String(totalAmount || '0'),
+                      ).toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                      })}`}
+                    </Text>
+                  </View>
+                     <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      // paddingTop: 14,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '600',
+                        fontFamily: fontFamily,
+                      }}>
+                      Total Pending
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '600',
+                        fontFamily: fontFamily,
+                      }}>
+                      {`₹ ${parseFloat(
+                        String(totalPending || '0'),
                       ).toLocaleString('en-IN', {
                         maximumFractionDigits: 2,
                       })}`}
@@ -734,14 +779,14 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
       <Modal
 
         show={openScannerModal}
-        containerStyle={{ margin: 0, maxHeight: '70%', backgroundColor:'white' }}
+        containerStyle={{ margin: 0, maxHeight: '70%', backgroundColor: 'white' }}
         style={{
           borderBottomLeftRadius: 0,
           borderBottomRightRadius: 0,
           paddingHorizontal: Size.lg,
         }}
         onClose={() => { }}
-        >
+      >
         <View>
           {/* <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <TouchableOpacity style={{ alignSelf: 'flex-end', marginBottom: 10 }} onPress={() => setOpenScannerModal(false)}>
@@ -764,7 +809,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
           </View> */}
           <View
             style={{
-                justifyContent: 'center',
+              justifyContent: 'center',
               alignItems: 'center',
               // padding: 20,
               // backgroundColor: '#fff',
@@ -792,7 +837,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ navigation, route }) =>
                 resizeMode="contain"
                 style={{ width: '100%', height: '100%' }}
               />
-                            {/* Close Button */}
+              {/* Close Button */}
 
             </View>
             <TouchableOpacity
@@ -823,7 +868,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: Size.containerPadding,
-    gap: 12,
+    // gap: 8,
   },
   headerTxt: {
     fontFamily: fontFamily,

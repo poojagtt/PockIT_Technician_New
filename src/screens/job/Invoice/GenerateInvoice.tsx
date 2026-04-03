@@ -266,12 +266,13 @@ const GenerateInvoice: React.FC<InvoiceProps> = ({navigation, route}) => {
 
       <View style={{margin: Size.containerPadding}}>
         <Button
-          label={item.CUSTOMER_TYPE == 'B' ? 'Send Happy Code' : 'Done'}
+          label={item.CUSTOMER_TYPE == 'B' ? 'Send Happy Code' : 'Next'}
           onPress={() => {
             item.CUSTOMER_TYPE == 'B'
               ? paymentReceived()
               : item.CUSTOMER_TYPE == 'I' &&
-                item.PAYMENT_MODE == 'COD' &&
+                // item.PAYMENT_MODE == 'COD'
+                 
                 item.PAYMENT_STATUS == 'P'
               ? navigation.navigate('InvoiceDetails', {
                   item,

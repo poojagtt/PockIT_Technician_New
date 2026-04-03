@@ -254,7 +254,7 @@ const ViewInvoice: React.FC<InvoiceProps> = ({navigation, route}) => {
             item.CUSTOMER_TYPE == 'B'
               ? paymentReceived()
               : item.CUSTOMER_TYPE == 'I' &&
-                item.PAYMENT_MODE == 'COD' &&
+                // item.PAYMENT_MODE == 'COD' 
                 item.PAYMENT_STATUS == 'P'
               ? navigation.navigate('InvoiceDetails', {
                   item,

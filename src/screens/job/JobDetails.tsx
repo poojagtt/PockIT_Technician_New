@@ -984,7 +984,7 @@ showsMyLocationButton={true}
                         style={{
                           position: 'absolute',
                           bottom: 12,
-                          right: 12,
+                          left: 12,
                           backgroundColor: 'white',
                           padding: 6,
                           borderRadius: 8,
